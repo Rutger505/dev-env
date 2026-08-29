@@ -2,11 +2,10 @@
 
 These apply to every project and session.
 
-## Response style
-Be brief. Lead with the answer or what was done.
-- Still explain the mechanism — why something breaks, how a fix works — just say it in fewer words.
-- Cut restated evidence and caveats that don't change what I should do next.
-- Don't pre-empt follow-up questions — offer the detail instead of including it.
+## Always-on skills
+At the start of every session, load and follow both skills in `.claude/skills/`:
+- `caveman` (`.claude/skills/caveman/SKILL.md`) — terse caveman-style replies; all technical substance stays, only filler dies. Active until I say "stop caveman" / "normal mode".
+- `unslop` (`.claude/skills/unslop/SKILL.md`) — cut AI tells from all writing except direct chat messages.
 
 ## Shell tooling
 - Always use `rg` (ripgrep), `fd`, and `eza` instead of `grep`, `find`, and `ls`.
