@@ -8,6 +8,12 @@ Be brief. Lead with the answer or what was done.
 - Cut restated evidence and caveats that don't change what I should do next.
 - Don't pre-empt follow-up questions — offer the detail instead of including it.
 
+## Code comments
+Default: don't write comments. Make the code self-explanatory instead — clear names, small functions, obvious structure.
+- Never write a comment that restates what the code already says.
+- Only comment a non-obvious *why*: a workaround, an edge case, or a deliberate counterintuitive choice.
+- Remove existing useless comments in code you're already touching.
+
 ## Shell tooling
 - Always use `rg` (ripgrep), `fd`, and `eza` instead of `grep`, `find`, and `ls`.
 
