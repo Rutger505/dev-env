@@ -59,12 +59,6 @@ cd ~/.local/share/dev-env
 stow --target="$HOME" .
 ```
 
-4. Do a full system update
-
-```bash
-dev-env-update-system
-```
-
 Do a **full system restart** for changing default shell and showing desktop application.
 
 ## Directory Structure
