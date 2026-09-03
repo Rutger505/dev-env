@@ -22,11 +22,12 @@ hl.config({
   },
 })
 
--- NVIDIA environment variables (disabled for power optimalization)
--- hl.env("NVD_BACKEND", "direct")
--- hl.env("LIBVA_DRIVER_NAME", "nvidia")
--- hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
+-- Omarchy's default/hypr/nvidia.lua forces these to nvidia, which wakes the dGPU
+-- for every GLX/VA-API client. Host config loads after it, so override them back.
+hl.env("__GLX_VENDOR_LIBRARY_NAME", "mesa")
+hl.env("LIBVA_DRIVER_NAME", "radeonsi")
+hl.env("VDPAU_DRIVER", "radeonsi")
 
--- Select iGPU for rendering and dGPU as backup.
-hl.env("AQ_DRM_DEVICES", "/dev/dri/amd-igpu:/dev/dri/nvidia-dgpu")
+-- dGPU left out entirely; listing it makes aquamarine open it and keep it awake.
+hl.env("AQ_DRM_DEVICES", "/dev/dri/amd-igpu")
 hl.env("VK_ICD_FILENAMES", "/usr/share/vulkan/icd.d/radeon_icd.x86_64.json:/usr/share/vulkan/icd.d/nvidia_icd.json")
