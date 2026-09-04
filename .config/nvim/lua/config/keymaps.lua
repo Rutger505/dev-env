@@ -121,3 +121,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function() vim.hl.on_yank() end,
 })
+
+vim.keymap.set("n", "<leader>zz", "mz[s1z=`z", { desc = "Fix last misspelling" })
