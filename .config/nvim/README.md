@@ -114,6 +114,20 @@ Language servers are managed by [Mason](https://github.com/williamboman/mason.nv
 
 Treesitter parsers are installed automatically (`auto_install = true`) when you open a file.
 
+## Formatting
+
+[conform.nvim](https://github.com/stevearc/conform.nvim) formats on save. Formatters are configured per filetype in `lua/plugins/editor.lua`; filetypes without one are left untouched.
+
+| Filetype | Formatter |
+|----------|-----------|
+| markdown | prettier |
+
+Install the formatter binary through `:Mason`.
+
+## Markdown
+
+[render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim) renders headings, lists, checkboxes, tables and code blocks inside the buffer. It activates on `markdown` filetypes; concealed markup expands again on the line the cursor sits on.
+
 ## TODO
 
 - [ ] Add DAP (debugger) support — `nvim-dap` + `nvim-dap-ui`
