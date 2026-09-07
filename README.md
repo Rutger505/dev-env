@@ -77,20 +77,10 @@ applications/
 ├── pre-install/
 │   ├── arch/              # Arch pre-install (chaotic-aur, etc.)
 │   └── debian/            # Debian pre-install (PPAs, etc.)
-├── patches/
-│   └── <plugin>/*.patch   # Local fixes to upstream plugins
 └── post-install/
     ├── *.sh               # Common post-install
     └── arch/              # Arch-specific post-install
 ```
-
-### Plugin patches
-
-`applications/patches/<plugin>/*.patch` holds local fixes to upstream tmux
-plugins. `applications/packages/tmux.sh` applies each one with `git am` in the
-plugin's own clone, so tpm's `git pull` on update merges them instead of
-overwriting. A patch that no longer applies is reported and skipped, leaving
-the plugin on plain upstream.
 
 ## Post install manual steps
 
