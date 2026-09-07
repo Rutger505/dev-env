@@ -14,10 +14,13 @@ if [ -f "$BLOAT_LIST" ]; then
   # Strip comments (whole-line and trailing) and blank lines.
   REMOVE_PACKAGES=("${(@f)$(awk '{ sub(/#.*/, ""); if ($1 != "") print $1 }' "$BLOAT_LIST")}")
 
+  # pacman -Q resolves provides, pacman -R does not: querying dotnet-runtime
+  # answers dotnet-runtime-9.0, while removing it fails with "target not
+  # found". So collect the real package names the query reports.
   INSTALLED_PACKAGES=()
   for pkg in "${REMOVE_PACKAGES[@]}"; do
-    if pacman -Qq "$pkg" &> /dev/null; then
-      INSTALLED_PACKAGES+=("$pkg")
+    if resolved="$(pacman -Qq "$pkg" 2> /dev/null)"; then
+      INSTALLED_PACKAGES+=("${(@f)resolved}")
     fi
   done
 

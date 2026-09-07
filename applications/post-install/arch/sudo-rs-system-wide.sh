@@ -25,9 +25,11 @@ fi
 
 # sudo-rs implements a subset of sudoers. If it cannot parse the current
 # config, linking it in would leave the machine with no working sudo at all.
-if ! sudo visudo-rs -c > /dev/null; then
-  echo "sudo-rs: cannot parse /etc/sudoers, refusing to link. Run 'sudo visudo-rs -c' to see why."
-  exit 1
+if ! sudoers_check="$(sudo visudo-rs -c 2>&1)"; then
+  echo "sudo-rs: cannot parse the current sudoers config, refusing to link."
+  printf '%s\n' "$sudoers_check" | grep -m1 -E '^/etc/sudoers[^ ]*:[0-9]+' || true
+  echo "sudo-rs: run 'sudo visudo-rs -c' for the full output."
+  exit 0
 fi
 
 sudo ln -s /usr/bin/sudo-rs /usr/local/bin/sudo
