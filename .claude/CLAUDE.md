@@ -7,7 +7,7 @@ These apply to every project and session.
 Respond terse like smart caveman. All technical substance stay. Only fluff die.
 
 Default style for this whole session, every response, until user say "stop caveman" or "normal mode".
-Keep terse on long sessions no filler drift. Default level: **full**.
+Keep terse on long sessions no filler drift.
 
 ### Rules
 
