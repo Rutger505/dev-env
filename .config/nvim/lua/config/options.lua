@@ -10,6 +10,9 @@ vim.o.showmode = false
 
 vim.o.undofile = true
 
+-- Load .nvim.lua from the project directory (prompts once to trust the file)
+vim.o.exrc = true
+
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
