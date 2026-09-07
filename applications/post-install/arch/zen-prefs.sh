@@ -19,6 +19,7 @@ fi
 # The pref(s) we manage. Add more lines here as needed.
 read -r -d '' MANAGED_PREFS <<'PREFS' || true
 user_pref("browser.sessionstore.restore_pinned_tabs_on_demand", false);
+user_pref("spellchecker.dictionary", "en-US,nl-NL");
 PREFS
 
 resolve_profile() {
