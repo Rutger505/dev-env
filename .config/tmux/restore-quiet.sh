@@ -8,5 +8,7 @@
 
 # The spinner's SIGTERM trap can print its end message just after restore.sh
 # returns, so let it land before clearing.
-sleep 0.3
-tmux display-message -d 1 ""
+for _ in {0..6}; do
+		sleep 0.05
+		tmux display-message -d 1 ""
+done
