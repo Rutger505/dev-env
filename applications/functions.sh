@@ -19,7 +19,9 @@ DISTRO="$(detect_distro)"
 pkg_install() {
   case "$DISTRO" in
     arch)
-      yay -Sy --needed "$@"
+      # No -y here: the databases are only refreshed when they are actually
+      # stale (first run, or right after a new repo was added).
+      yay -S --needed "$@"
       ;;
     debian)
       sudo apt-get install -y "$@"
@@ -50,8 +52,11 @@ pkg_update() {
 pkg_bootstrap() {
   case "$DISTRO" in
     arch)
+      if ! command -v yay &> /dev/null; then
+        sudo pacman -Sy --needed --noconfirm yay
+      fi
       if ! command -v fzf &> /dev/null; then
-        sudo pacman -S --noconfirm fzf
+        sudo pacman -S --needed --noconfirm fzf
       fi
       ;;
     debian)

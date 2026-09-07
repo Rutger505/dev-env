@@ -29,5 +29,9 @@ else
 	echo "chaotic-aur entry already exists in pacman.conf, skipping."
 fi
 
+# The new repo has no database on disk yet, so fetch it once here. This is the
+# only place install.sh refreshes databases besides bootstrapping yay.
+sudo pacman -Sy
+
 
 
