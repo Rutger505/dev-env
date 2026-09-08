@@ -1,0 +1,101 @@
+TRIM is disabled on the encrypted SSD. Fix this on the desktop.
+================================================================
+
+Diagnosed on the laptop 2026-09-08. The desktop almost certainly has the same
+problem, since both machines came from the same Omarchy install.
+
+Symptom
+-------
+The machine freezes during write-heavy work: Steam downloads, yay upgrades,
+JetBrains Toolbox updates. CPU sits near idle the whole time. Clicking a browser
+tab does nothing for seconds.
+
+Cause
+-----
+The LUKS container was opened without allow-discards, so dm-crypt silently drops
+every TRIM command. fstrim.timer is disabled and no filesystem is mounted with
+discard=async, so nothing ever trimmed the drive either. The SSD controller
+therefore believes the entire disk is full of live data and has to garbage
+collect on every write.
+
+On the laptop this had been going since install: 20.9 TB written, zero TRIM ever
+issued, and 381 GB sitting in blocks the drive could not reclaim.
+
+Check whether the desktop has it
+--------------------------------
+    cat /sys/block/dm-*/queue/discard_max_bytes
+
+A 0 confirms the bug. Anything large means TRIM already works and you can stop.
+
+Confirm the device mapper name before running anything below. The laptop's is
+"root". Check with lsblk and substitute if the desktop differs.
+
+Fix
+---
+1. Unblock discards and bypass the dm-crypt write queue. Needs the LUKS
+   passphrase. Writes the flags into the LUKS2 header, so it survives reboots
+   without touching the kernel command line.
+
+    sudo cryptsetup refresh root --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent
+    cat /sys/block/dm-0/queue/discard_max_bytes
+
+   Second command has to print something non-zero before going further.
+
+   Note: allow-discards lets anyone with raw access to the powered-off disk see
+   which blocks are unused, so roughly how full it is. It does not expose file
+   contents or keys. Standard tradeoff for SSDs.
+
+2. First trim. Took 6 minutes on the laptop and freed 381 GB. Expect similar.
+
+    sudo fstrim -av
+
+3. Keep it trimmed. Edit fstab, verify, then remount.
+
+    sudo sed -i 's/space_cache=v2/space_cache=v2,discard=async,noatime/' /etc/fstab
+    rg btrfs /etc/fstab
+
+   Read those lines before continuing. Then remount every btrfs subvolume the
+   desktop actually has, which may not match the laptop's four:
+
+    sudo mount -o remount,discard=async,noatime /
+    sudo mount -o remount,discard=async,noatime /home
+    sudo mount -o remount,discard=async,noatime /var/log
+    sudo mount -o remount,discard=async,noatime /var/cache/pacman/pkg
+    sudo systemctl enable --now fstrim.timer
+
+   noatime rides along for free and drops a metadata write on every file read.
+
+Verify
+------
+    sudo dmsetup table root | rg -o 'allow_discards|no_read_workqueue|no_write_workqueue'
+    findmnt -t btrfs -o TARGET,OPTIONS
+    systemctl is-enabled fstrim.timer
+
+All three flags present, discard=async and noatime on every subvolume, timer
+enabled.
+
+Then run a real Steam or yay update and check:
+
+    cat /proc/pressure/io
+
+That reports the share of wall time every task was blocked on IO. On the laptop
+it went from 62.80% to 8.33%, and full avg60 settled at 1.50%. Single digits
+means it worked.
+
+Things deliberately not done
+---------------------------
+IO scheduler stays on "none". Switching to mq-deadline was on the table to stop
+bulk writes starving interactive reads, but after the fix the laptop measured
+1.77 ms average read latency under an 8 GB write load. Nothing to reorder, so it
+would buy nothing. Only revisit if pressure stays high after the fix.
+
+Dirty page limits are already tuned in /etc/sysctl.d/99-omarchy-sysctl.conf,
+capped at 64M/256M. That is the fix most guides suggest for these symptoms. It
+was already applied and was never the problem. Leave it alone.
+
+Benchmark script
+----------------
+~/diskbench.sh on the laptop, not in this repo. Needs fio and ioping. It
+measures read latency under write load, which is the number that tracks how the
+machine actually feels, rather than raw throughput. Throughput can look fine
+while the desktop is unusable.
