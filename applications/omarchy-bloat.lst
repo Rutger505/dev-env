@@ -55,13 +55,6 @@ qemu-user-static-binfmt  # binfmt rules for cross-arch emulation; qemu-user-stat
                          # is not installed, so the rules bind nothing.
 
 
-### Input method for languages not used here #################################
-
-fcitx5                   #  18 MB. CJK/IME framework.
-fcitx5-qt                #   2 MB.
-fcitx5-gtk               # 0.3 MB.
-
-
 ### Hardware that is not in this machine #####################################
 
 asdcontrol               # Brightness for Apple Studio/Pro USB-C displays.
