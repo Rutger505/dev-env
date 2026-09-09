@@ -1,0 +1,1 @@
+ sudo rmdir /var/cache/pacman/pkg/download-*
