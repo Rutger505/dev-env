@@ -11,7 +11,8 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("hyprctl dispatch workspace 4")
   hl.exec_cmd("[workspace 4 silent] uwsm app -- discord")
 
-  hl.exec_cmd("[workspace 5 silent] uwsm app -- spotify")
+  -- Use desktop file, with wayland config
+  hl.exec_cmd("[workspace 5 silent] uwsm app start spotify")
 end)
 
 -- https://wiki.hypr.land/Configuring/Performance/#how-do-i-make-hyprland-draw-as-little-power-as-possible-on-my-laptop
