@@ -1,0 +1,12 @@
+[Unit]
+Description=tmux server
+Documentation=man:tmux(1)
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/sh -c '/usr/bin/tmux has-session -t 0 || exec /usr/bin/tmux new-session -d -s 0 -x 250 -y 60'
+ExecStop=/usr/bin/tmux kill-server
+
+[Install]
+WantedBy=default.target

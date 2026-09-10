@@ -7,3 +7,6 @@ if [ ! -d "$TPM_DIR" ]; then
   git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
 fi
 "$TPM_DIR/bin/install_plugins" all
+
+echo "Enabling tmux server service"
+systemctl --user enable --now tmux.service
