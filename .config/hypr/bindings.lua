@@ -54,4 +54,6 @@ o.bind("ALT + SHIFT + PRINT", "GSR screenshot region", "gsr-ui-cli take-screensh
 -- Omarchy's preinstalled-app bindings are all disabled by the
 -- ~/.local/state/omarchy/preinstalls-removed marker, so rebind the ones for
 -- apps we do keep installed.
-o.bind("SUPER + SHIFT + M", "Music", { omarchy = "spotify" })
+-- Overrides omarchy-launch-spotify, which runs plain /usr/bin/spotify without
+-- --ozone-platform=wayland (see rutger-laptop-omarchy.lua autostart).
+o.bind("SUPER + SHIFT + M", "Music", { focus = "spotify", launch = "spotify --ozone-platform=wayland" })
