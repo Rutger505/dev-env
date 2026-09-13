@@ -1,8 +1,9 @@
 # Arch-specific gaming packages
 wine
 winetricks
-proton-ge
+proton-ge-bin
 steam
+heroic-games-launcher-bin
 
 prismlauncher
 
