@@ -1,11 +1,10 @@
 # Arch-specific gaming packages
 wine
 winetricks
-lutris
+proton-ge-bin
 steam
+heroic-games-launcher-bin
 
-jdk21-openjdk
-minecraft-launcher
 prismlauncher
 
 # ShadowPlay-style clip recorder + overlay UI
