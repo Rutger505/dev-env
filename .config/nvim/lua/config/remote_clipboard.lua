@@ -2,8 +2,8 @@
 -- every copy is emitted as OSC 52 (inside tmux this becomes a tmux buffer,
 -- rebroadcast to every attached client, local or SSH). Paste prefers the
 -- local Wayland clipboard when one is available, so content copied in other
--- apps remains pasteable; without a display, paste is an OSC 52 query that
--- tmux (or the terminal) answers.
+-- apps remains pasteable; without a display, paste returns Neovim's last yank
+-- (set vim.g.omarchy_remote_clipboard_osc52_paste to query the terminal).
 local M = {}
 
 local function proc_lines(pid, file)
@@ -54,10 +54,14 @@ function M.setup()
     and vim.fn.executable("wl-copy") == 1
     and vim.fn.executable("wl-paste") == 1
 
+  local last_yank = {}
+
   local function copy(register)
     local emit = osc52.copy(register)
 
-    return function(lines)
+    return function(lines, regtype)
+      last_yank[register] = { lines, regtype }
+
       if has_wayland then
         local cmd = { "wl-copy", "--sensitive", "--type", "text/plain" }
         if register == "*" then
@@ -74,7 +78,17 @@ function M.setup()
 
   local function paste(register)
     if not has_wayland then
-      return osc52.paste(register)
+      -- Most terminals ignore OSC 52 read requests (Alacritty by default,
+      -- Ghostty prompts), which leaves every `p` stuck on "Waiting for OSC 52
+      -- response". Paste Neovim's own last yank instead; use the terminal's
+      -- paste key for text copied elsewhere.
+      if vim.g.omarchy_remote_clipboard_osc52_paste then
+        return osc52.paste(register)
+      end
+
+      return function()
+        return last_yank[register] or {}
+      end
     end
 
     return function()
