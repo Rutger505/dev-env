@@ -6,6 +6,12 @@ return {
 		init = function()
 			vim.g.rustaceanvim = {
 				server = {
+					-- Always use stable's binary: custom toolchains like esp ship without
+					-- rust-analyzer. A direct path (not `rustup run`) keeps cargo on the
+					-- project's own toolchain.
+					cmd = function()
+						return { vim.trim(vim.fn.system({ "rustup", "which", "--toolchain", "stable", "rust-analyzer" })) }
+					end,
 					capabilities = require("blink.cmp").get_lsp_capabilities(),
 					default_settings = {
 						["rust-analyzer"] = {
