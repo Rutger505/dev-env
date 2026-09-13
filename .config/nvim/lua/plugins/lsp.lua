@@ -13,8 +13,11 @@ return {
 			ensure_installed = {
 				"lua_ls",
 				"neocmake",
+				"vtsls",
+				"eslint",
+				"tailwindcss",
+				"jsonls",
 			},
-			automatic_installation = true,
 		},
 	},
 

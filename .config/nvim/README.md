@@ -121,8 +121,17 @@ Treesitter parsers are installed automatically (`auto_install = true`) when you 
 | Filetype | Formatter |
 |----------|-----------|
 | markdown | prettier |
+| rust | rustfmt |
 
-Install the formatter binary through `:Mason`.
+Install the formatter binary through `:Mason`. rustfmt comes from rustup instead.
+
+## Rust
+
+[rustaceanvim](https://github.com/mrcjkb/rustaceanvim) starts rust-analyzer for Rust buffers, so don't install `rust_analyzer` through Mason. It would start a second server. Install the server with `rustup component add rust-analyzer`. Diagnostics on save come from clippy.
+
+`:RustLsp` has the extras: `runnables`, `testables`, `expandMacro`, `explainError`, `openCargo`.
+
+[crates.nvim](https://github.com/saecki/crates.nvim) shows crate versions inline in `Cargo.toml`.
 
 ## Markdown
 
