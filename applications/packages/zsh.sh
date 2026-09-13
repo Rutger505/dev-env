@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ "$SHELL" != *zsh* ]]; then 
+if [[ "$SHELL" != *zsh* ]]; then
   echo "Changing default shell to zsh"
   chsh -s $(which zsh)
 fi
