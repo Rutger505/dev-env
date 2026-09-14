@@ -8,6 +8,9 @@ hl.config({
   },
 })
 
+-- Omarchy makes every window slightly transparent (browsers when unfocused).
+o.window(".*", { opacity = "1 1" })
+
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#general
 -- hl.config({
 --   general = {
