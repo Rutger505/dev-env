@@ -1,0 +1,11 @@
+{
+  "model": "opus",
+  "env": {
+    "DISABLE_AUTOUPDATER": "1"
+  },
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true
+  },
+  "tui": "default",
+  "skipDangerousModePermissionPrompt": true
+}

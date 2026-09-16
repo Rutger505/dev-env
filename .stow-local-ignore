@@ -4,7 +4,7 @@
 ^/README.*
 ^/TODO.*
 ^/CLAUDE.*
-/\.claude/(?!CLAUDE\.md$|skills($|/)).*
+/\.claude/(?!CLAUDE\.md$|settings\.json$|skills($|/)).*
 applications
 synchronization
 scripts
