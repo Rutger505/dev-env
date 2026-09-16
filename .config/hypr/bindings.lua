@@ -30,11 +30,9 @@
 
 -- GPU Screen Recorder
 -- gsr's own evdev hotkeys are disabled (main.hotkeys_enable_option
--- disable_hotkeys) because kanata grabs the physical keyboards and gsr skips
--- kanata's virtual device as "might be a mouse", so it can never grab anything.
--- See applications/packages/kanata.sh. We bind the same actions to gsr-ui-cli
--- in Hyprland instead. (Ported back from the old bindings.conf, lost in the
--- .conf -> .lua migration.)
+-- disable_hotkeys); the same actions are bound to gsr-ui-cli in Hyprland
+-- instead. (Ported back from the old bindings.conf, lost in the .conf -> .lua
+-- migration.)
 o.bind("ALT + Z", "GSR show/hide", "gsr-ui-cli toggle-show")
 o.bind("ALT + F7", "GSR pause/unpause recording", "gsr-ui-cli toggle-pause")
 o.bind("ALT + F8", "GSR start/stop streaming", "gsr-ui-cli toggle-stream")

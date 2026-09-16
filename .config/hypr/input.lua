@@ -4,7 +4,7 @@
 hl.config({
   input = {
     kb_layout = "us",
-    kb_options = "compose:caps",
+    kb_options = "caps:escape,compose:ralt",
 
     -- Change speed of keyboard repeat.
     repeat_rate = 40,
