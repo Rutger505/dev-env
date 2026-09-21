@@ -1,3 +1,0 @@
-#!/bin/bash
-# Get CPU percentage for waybar
-top -bn2 -d 0.5 | grep 'Cpu(s)' | tail -1 | awk '{print int($2)}'
