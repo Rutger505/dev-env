@@ -1,4 +1,7 @@
 # Arch-specific core packages
 
+# Map caps to esc
+kanata
+
 # Hyprland monitors (omarchy)
 nwg-displays
