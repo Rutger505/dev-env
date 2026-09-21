@@ -30,4 +30,4 @@ hl.env("VDPAU_DRIVER", "radeonsi")
 
 -- dGPU left out entirely; listing it makes aquamarine open it and keep it awake.
 hl.env("AQ_DRM_DEVICES", "/dev/dri/amd-igpu")
-hl.env("VK_ICD_FILENAMES", "/usr/share/vulkan/icd.d/radeon_icd.x86_64.json:/usr/share/vulkan/icd.d/nvidia_icd.json")
+hl.env("VK_ICD_FILENAMES", "/usr/share/vulkan/icd.d/radeon_icd.json:/usr/share/vulkan/icd.d/nvidia_icd.json")
