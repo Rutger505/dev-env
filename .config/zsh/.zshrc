@@ -32,7 +32,6 @@ plugins=(
   # JavaScript / TypeScript / Node.js
   node
   npm
-  nvm
   fnm
   bun
   # Python

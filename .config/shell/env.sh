@@ -32,7 +32,6 @@ export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 export OMNISHARPHOME="$XDG_CONFIG_HOME/omnisharp"
 
-export NVM_DIR="$XDG_DATA_HOME/nvm"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export PNPM_HOME="$XDG_DATA_HOME/pnpm"
@@ -65,7 +64,6 @@ path_prepend "$BUN_INSTALL/bin"
 path_prepend "$XDG_DATA_HOME/opencode/bin"
 path_prepend "/usr/libexec/imv"
 path_prepend "$CARGO_HOME/bin"
-path_prepend "$HOME/miniforge3/bin"
 
 # espup installs the Xtensa toolchain under a versioned directory, which is
 # why these can't live in environment.d. LIBCLANG_PATH is for bindgen /
