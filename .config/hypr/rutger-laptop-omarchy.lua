@@ -28,6 +28,8 @@ hl.env("__GLX_VENDOR_LIBRARY_NAME", "mesa")
 hl.env("LIBVA_DRIVER_NAME", "radeonsi")
 hl.env("VDPAU_DRIVER", "radeonsi")
 
--- dGPU left out entirely; listing it makes aquamarine open it and keep it awake.
+-- dGPU left out entirely: aquamarine opens any DRM device it is given, and
+-- vkEnumeratePhysicalDevices initialises every listed ICD, both of which
+-- resume it from D3cold. Vulkan apps therefore only see the iGPU.
 hl.env("AQ_DRM_DEVICES", "/dev/dri/amd-igpu")
-hl.env("VK_ICD_FILENAMES", "/usr/share/vulkan/icd.d/radeon_icd.json:/usr/share/vulkan/icd.d/nvidia_icd.json")
+hl.env("VK_ICD_FILENAMES", "/usr/share/vulkan/icd.d/radeon_icd.json")
