@@ -97,6 +97,22 @@ Personal Neovim configuration built on [Lazy.nvim](https://github.com/folke/lazy
 | `<leader>gp` | Preview hunk |
 | `<leader>gb` | Blame line |
 
+### AI (sidekick.nvim)
+
+| Key | Action |
+|-----|--------|
+| `<M-y>` (Alt+y) | Insert mode: accept ghost text, else jump to / apply next edit suggestion. Normal mode: next edit suggestion only |
+| `<C-.>` | Focus the AI CLI window (any mode) |
+| `<leader>aa` | Toggle Claude |
+| `<leader>as` | Pick a CLI tool |
+| `<leader>ad` | Detach CLI session |
+| `<leader>at` | Send current position/selection (normal + visual) |
+| `<leader>af` | Send current file |
+| `<leader>av` | Send visual selection |
+| `<leader>ap` | Pick a prompt (normal + visual) |
+
+Ghost text at the cursor (Neovim's built-in `vim.lsp.inline_completion`) and next edit suggestions for other lines (sidekick) both come from the Copilot language server, which Mason installs. Next edit suggestions update while you type in insert mode too. If nothing shows up, sign in with `:LspCopilotSignIn`.
+
 ### Plugin Manager
 
 | Key | Action |
@@ -141,4 +157,4 @@ Install the formatter binary through `:Mason`. rustfmt comes from rustup instead
 
 - [ ] Add DAP (debugger) support — `nvim-dap` + `nvim-dap-ui`
 - [ ] Add flash.nvim
-- [ ] Add some sort of ai integrations
+- [ ] Add some sort of ai integrations (sidekick.nvim prototype in `lua/plugins/sidekick.lua`)

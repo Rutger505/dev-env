@@ -2,6 +2,7 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Which-key groups
 require("which-key").add({
+  { "<leader>a", group = "ai" },
   { "<leader>b", group = "buffer" },
   { "<leader>c", group = "code" },
   { "<leader>f", group = "find" },
@@ -79,6 +80,17 @@ vim.keymap.set("n", "<leader>gp", function() require("gitsigns").preview_hunk() 
 vim.keymap.set("n", "<leader>gb", function() require("gitsigns").blame_line() end,   { desc = "Blame Line" })
 vim.keymap.set("n", "[h", function() require("gitsigns").prev_hunk() end, { desc = "Prev Hunk" })
 vim.keymap.set("n", "]h", function() require("gitsigns").next_hunk() end, { desc = "Next Hunk" })
+
+-- Sidekick (AI CLI + next edit suggestions)
+vim.keymap.set("n", "<M-y>", function() require("sidekick").nes_jump_or_apply() end, { desc = "Goto/Apply Next Edit Suggestion" })
+vim.keymap.set({ "n", "t", "i", "x" }, "<C-.>", function() require("sidekick.cli").focus() end, { desc = "Sidekick Focus" })
+vim.keymap.set("n", "<leader>aa", function() require("sidekick.cli").toggle({ name = "claude", focus = true }) end, { desc = "Toggle Claude" })
+vim.keymap.set("n", "<leader>as", function() require("sidekick.cli").select() end,                          { desc = "Select CLI" })
+vim.keymap.set("n", "<leader>ad", function() require("sidekick.cli").close() end,                           { desc = "Detach CLI Session" })
+vim.keymap.set({ "n", "x" }, "<leader>at", function() require("sidekick.cli").send({ msg = "{this}" }) end, { desc = "Send This" })
+vim.keymap.set("n", "<leader>af", function() require("sidekick.cli").send({ msg = "{file}" }) end,          { desc = "Send File" })
+vim.keymap.set("x", "<leader>av", function() require("sidekick.cli").send({ msg = "{selection}" }) end,     { desc = "Send Selection" })
+vim.keymap.set({ "n", "x" }, "<leader>ap", function() require("sidekick.cli").prompt() end,                 { desc = "Select Prompt" })
 
 -- Quit
 vim.keymap.set("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit All" })

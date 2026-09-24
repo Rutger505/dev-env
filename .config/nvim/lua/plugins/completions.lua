@@ -13,6 +13,11 @@ return {
 				["<C-n>"] = { "select_next", "fallback" },
 				["<C-b>"] = { "scroll_documentation_up", "fallback" },
 				["<C-f>"] = { "scroll_documentation_down", "fallback" },
+				["<M-y>"] = {
+					function() return vim.lsp.inline_completion.get() end,
+					function() return require("sidekick").nes_jump_or_apply() end,
+					"fallback",
+				},
 				["<Tab>"] = { "fallback" },
 				["<S-Tab>"] = { "fallback" },
 			},

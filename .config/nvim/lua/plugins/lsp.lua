@@ -17,6 +17,7 @@ return {
 				"eslint",
 				"tailwindcss",
 				"jsonls",
+				"copilot",
 			},
 		},
 	},
@@ -37,6 +38,8 @@ return {
 
 			-- Enable all servers installed via mason-lspconfig
 			vim.lsp.enable(require("mason-lspconfig").get_installed_servers())
+
+			vim.lsp.inline_completion.enable()
 		end,
 	},
 }
