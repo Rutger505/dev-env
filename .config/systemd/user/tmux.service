@@ -1,6 +1,7 @@
 [Unit]
 Description=tmux server
 Documentation=man:tmux(1)
+After=graphical-session.target
 
 [Service]
 Type=oneshot
@@ -9,4 +10,4 @@ ExecStart=/bin/sh -c '/usr/bin/tmux has-session -t 0 || exec /usr/bin/tmux new-s
 ExecStop=/usr/bin/tmux kill-server
 
 [Install]
-WantedBy=default.target
+WantedBy=graphical-session.target
