@@ -101,7 +101,8 @@ Personal Neovim configuration built on [Lazy.nvim](https://github.com/folke/lazy
 
 | Key | Action |
 |-----|--------|
-| `<M-y>` (Alt+y) | Insert mode: accept ghost text, else jump to / apply next edit suggestion. Normal mode: next edit suggestion only |
+| `<M-y>` (Alt+y) | Jump to / apply next edit suggestion (normal + insert) |
+| `<M-l>` (Alt+l) | Accept ghost text (insert) |
 | `<C-.>` | Focus the AI CLI window (any mode) |
 | `<leader>aa` | Toggle Claude |
 | `<leader>as` | Pick a CLI tool |
@@ -111,7 +112,7 @@ Personal Neovim configuration built on [Lazy.nvim](https://github.com/folke/lazy
 | `<leader>av` | Send visual selection |
 | `<leader>ap` | Pick a prompt (normal + visual) |
 
-Ghost text at the cursor (Neovim's built-in `vim.lsp.inline_completion`) and next edit suggestions for other lines (sidekick) both come from the Copilot language server, which Mason installs. Next edit suggestions update while you type in insert mode too. If nothing shows up, sign in with `:LspCopilotSignIn`.
+Ghost text at the cursor (Neovim's built-in `vim.lsp.inline_completion`) and next edit suggestions for other lines (sidekick) both come from the Copilot language server, which Mason installs. Next edit suggestions update while you type in insert mode too, and survive leaving insert mode. If nothing shows up, sign in with `:LspCopilotSignIn`.
 
 ### Plugin Manager
 
