@@ -79,6 +79,19 @@ Personal Neovim configuration built on [Lazy.nvim](https://github.com/folke/lazy
 | `<leader>cl` | LSP definitions panel |
 | `<leader>cp` | PlantUML preview (in `.puml` files) |
 
+### Surround (mini.surround)
+
+| Key | Action |
+|-----|--------|
+| `sa{motion}{char}` | Add surrounding (e.g. `saiw"`); in visual mode `sa{char}` surrounds the selection |
+| `sd{char}` | Delete surrounding (e.g. `sd"`) |
+| `sr{old}{new}` | Replace surrounding (e.g. `sr"'`) |
+| `sf` / `sF` | Find surrounding to the right / left |
+| `sh` | Highlight surrounding |
+| `sn` | Change number of neighbor lines searched |
+
+Use `(`, `[` or `{` to add inner spaces, `)`, `]` or `}` for none. `t` surrounds with an HTML tag, `f` with a function call.
+
 ### Diagnostics
 
 | Key | Action |

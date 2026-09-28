@@ -35,6 +35,21 @@ return {
 	},
 
 	{
+		"echasnovski/mini.surround",
+		version = "*",
+		keys = {
+			{ "sa", mode = { "n", "x" } },
+			"sd",
+			"sr",
+			"sf",
+			"sF",
+			"sh",
+			"sn",
+		},
+		opts = {},
+	},
+
+	{
 		"stevearc/conform.nvim",
 		event = "BufWritePre",
 		cmd = { "ConformInfo" },
