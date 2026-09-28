@@ -10,6 +10,12 @@ echo "Script started at $(date)"
 echo "Changing directory to $DEV_ENV"
 cd "$DEV_ENV" || { create_error_file && exit 1 }
 
+SPELL_FILE=".config/nvim/spell/en.utf-8.add"
+if ! git diff --quiet HEAD -- "$SPELL_FILE"; then
+  echo "Committing spell file changes"
+  git commit --quiet -m "chore(nvim): update spell word list" -- "$SPELL_FILE" || { create_error_file; exit 1; }
+fi
+
 # Check for uncommitted changes
 if ! git diff --quiet || ! git diff --cached --quiet; then
   echo "Repository has uncommitted changes, aborting"
