@@ -14,7 +14,16 @@ return {
 				["<C-b>"] = { "scroll_documentation_up", "fallback" },
 				["<C-f>"] = { "scroll_documentation_down", "fallback" },
 				["<M-y>"] = {
-					function() return require("sidekick").nes_jump_or_apply() end,
+					-- Leave insert mode first: sidekick's jump runs `normal! m'`, which mangles
+					-- the buffer when it interrupts a pending insert.
+					function()
+						if not require("sidekick.nes").have() then
+							return false
+						end
+						vim.cmd("stopinsert")
+						vim.schedule(function() require("sidekick").nes_jump_or_apply() end)
+						return true
+					end,
 					"fallback",
 				},
 				["<M-l>"] = {

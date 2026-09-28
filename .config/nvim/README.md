@@ -101,7 +101,7 @@ Personal Neovim configuration built on [Lazy.nvim](https://github.com/folke/lazy
 
 | Key | Action |
 |-----|--------|
-| `<M-y>` (Alt+y) | Jump to / apply next edit suggestion (normal + insert) |
+| `<M-y>` (Alt+y) | Jump to / apply next edit suggestion (normal + insert; leaves insert mode first) |
 | `<M-l>` (Alt+l) | Accept ghost text (insert) |
 | `<C-.>` | Focus the AI CLI window (any mode) |
 | `<leader>aa` | Toggle Claude |
