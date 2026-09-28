@@ -32,6 +32,7 @@ vim.g.loaded_netrwPlugin = 1
 
 vim.opt.spell = true
 vim.opt.spelllang = { "en_us", "nl" }
+vim.opt.spellfile = vim.fn.stdpath("config") .. "/spell/en.utf-8.add"
 
 -- Defer communicating to system clipboard after startup
 vim.schedule(function()

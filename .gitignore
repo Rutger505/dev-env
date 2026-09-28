@@ -4,3 +4,6 @@
 
 # clipcdn holds a MinIO secret key — only the .example is tracked
 .config/clipcdn/config
+
+# nvim regenerates compiled spell files from the .add word lists
+.config/nvim/spell/*.spl

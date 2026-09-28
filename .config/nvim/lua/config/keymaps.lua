@@ -135,3 +135,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 vim.keymap.set("n", "<leader>zz", "mz[s1z=`z", { desc = "Fix last misspelling" })
+vim.keymap.set("n", "zG", "mz[szg`z", { desc = "Mark last misspelling as good" })
+vim.keymap.set("n", "zW", "<Nop>")
