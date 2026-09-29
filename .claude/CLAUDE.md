@@ -26,6 +26,7 @@ Keep shell commands as simple as possible so they are readable and Claude Code c
 - Don't append `2>/dev/null` to suppress errors.
 - Don't add decorative `echo` statements.
 - When multiple steps are needed, prefer running separate commands over chaining them, to keep each one parse able.
+- Never prefix a command with `!` when writing it out for me to run. I copy commands into my own zsh, where a leading `!` is the logical NOT operator and inverts the exit status, so a successful command reports failure. Print the bare command.
 
 ## Machine folder structure
 
