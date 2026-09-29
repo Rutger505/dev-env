@@ -8,3 +8,7 @@
 .config/onedrive/*
 !.config/onedrive/config
 !.config/onedrive/sync_list
+
+# ~/.ssh is folded into the repo when it does not exist yet, keep keys out of git
+.ssh/*
+!.ssh/config

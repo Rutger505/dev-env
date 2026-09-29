@@ -10,7 +10,7 @@ The live checkout is `~/.local/share/dev-env`. The `dev-env-update-self` timer r
 
 ## Layout
 
-- `install.sh`: the installer. Adds chaotic-aur, picks optional groups with fzf, installs `install/packages.lst` plus the chosen lists with yay, then runs `install/*.sh` and the chosen `install/optional/*.sh`.
+- `install.sh`: the installer. Adds chaotic-aur, stows the configs (adopting Omarchy's defaults and restoring ours), picks optional groups with fzf, installs `install/packages.lst` plus the chosen lists with yay, then runs `install/*.sh` and the chosen `install/optional/*.sh`. One run plus a reboot must give a finished machine.
 - `install/packages.lst`: packages every machine gets. One per line.
 - `install/optional/<group>.lst` / `<group>.sh`: optional groups. The group name is the file name, a group can have a list, a script, or both.
 - `install/*.sh`: setup steps, run alphabetically after the packages are installed.
@@ -22,6 +22,7 @@ The live checkout is `~/.local/share/dev-env`. The `dev-env-update-self` timer r
 
 - Keep it minimal. No comments unless they explain a non-obvious why, no logging, no feature flags, no fallbacks for situations that can't happen on Omarchy.
 - Every install script must be safe to rerun.
+- Install scripts can rely on the configs being stowed, but not on anything that only exists after a reboot or re-login: the new groups, the zsh login shell, `environment.d`. Enable user units without `--now`, the reboot starts them.
 - Environment variables live in both `.config/shell/env.sh` (zsh and uwsm) and `.config/environment.d/dev-env.conf` (systemd user services). Change both.
 - Host-specific Hyprland config goes in `.config/hypr/<hostname>.lua`, which `hyprland.lua` loads automatically.
 - nvim has its own rules in `.config/nvim/CLAUDE.md`.

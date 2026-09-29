@@ -43,8 +43,20 @@ select_optional_groups() {
   echo "$selected" >"$optional_file"
 }
 
+link_configs() {
+  # Omarchy ships its own hypr, git, tmux and starship configs: adopt them to get past the conflicts, then restore ours.
+  # Only on a clean tree, the restore would discard local changes.
+  if git -C .. diff --quiet HEAD; then
+    ../scripts/dev-env-stow --adopt
+    git -C .. checkout -- .
+  else
+    ../scripts/dev-env-stow
+  fi
+}
+
 add_chaotic_aur
-sudo pacman -S --needed --noconfirm yay fzf
+sudo pacman -S --needed --noconfirm yay fzf stow
+link_configs
 select_optional_groups
 
 lists=(packages.lst)
@@ -61,3 +73,5 @@ for script in "${scripts[@]}"; do
   echo "Running $script"
   "./$script"
 done
+
+echo "Done. Reboot to switch to zsh, pick up the new groups and environment, and start tmux and the auto-updater."
