@@ -5,5 +5,10 @@
 # clipcdn holds a MinIO secret key — only the .example is tracked
 .config/clipcdn/config
 
+# onedrive stores its refresh_token and sync database next to the config
+.config/onedrive/*
+!.config/onedrive/config
+!.config/onedrive/sync_list
+
 # nvim regenerates compiled spell files from the .add word lists
 .config/nvim/spell/*.spl

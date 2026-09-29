@@ -1,0 +1,8 @@
+sync_dir = "~/School"
+
+skip_file = "~*|.~*|*.tmp|*.swp|*.partial"
+
+# Seconds between remote change checks in monitor mode
+monitor_interval = "300"
+
+use_recycle_bin = "true"
