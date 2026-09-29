@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mkdir -p "$HOME/School"
+mkdir -p "$HOME/Documents/School"
 
 if [ ! -f "${XDG_CONFIG_HOME:-$HOME/.config}/onedrive/refresh_token" ]; then
   onedrive

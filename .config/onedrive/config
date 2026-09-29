@@ -1,5 +1,5 @@
-# Local directory that mirrors the remote folder selected in sync_list
-sync_dir = "/home/rutger/School"
+# Local root of the OneDrive; sync_list limits it to ~/Documents/School
+sync_dir = "/home/rutger/Documents"
 
 # Skip editor/office temporary files
 skip_file = "~*|.~*|*.tmp|*.swp|*.partial"
