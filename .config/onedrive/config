@@ -1,5 +1,5 @@
-# Local root of the OneDrive; sync_list limits it to School, ~/School links into it
-sync_dir = "/home/rutger/OneDrive"
+# Local root of the OneDrive; sync_list limits it to ~/Documents/School
+sync_dir = "/home/rutger/Documents"
 
 # Skip editor/office temporary files
 skip_file = "~*|.~*|*.tmp|*.swp|*.partial"

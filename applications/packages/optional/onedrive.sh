@@ -2,7 +2,7 @@
 
 # Authenticates the abraunegg OneDrive client. The config and sync_list are
 # stowed from .config/onedrive, syncing only the remote School folder into
-# ~/OneDrive/School, with ~/School as a shortcut to it.
+# ~/Documents/School.
 
 set -euo pipefail
 
@@ -13,10 +13,7 @@ fi
 
 CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/onedrive"
 
-mkdir -p "$HOME/OneDrive/School"
-if [[ ! -e "$HOME/School" ]]; then
-  ln -s "$HOME/OneDrive/School" "$HOME/School"
-fi
+mkdir -p "$HOME/Documents/School"
 
 # Authenticate if no refresh token is present yet.
 # The client prints a URL, you log in and paste the redirected URL back.
