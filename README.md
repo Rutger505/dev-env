@@ -18,13 +18,9 @@ Packages, dotfiles and scripts for my Omarchy (Arch + Hyprland) machines.
    ~/.local/share/dev-env/install.sh
    ```
 
-3. Link the configs and reboot:
+3. Reboot.
 
-   ```bash
-   ~/.local/share/dev-env/scripts/dev-env-stow
-   ```
-
-`install.sh` is safe to rerun. It opens an fzf picker for the optional groups in `install/optional/` with your previous choice preselected (stored in `~/.config/dev-env/optional-packages.conf`).
+`install.sh` also links the configs, replacing Omarchy's defaults, and is safe to rerun. It opens an fzf picker for the optional groups in `install/optional/` with your previous choice preselected (stored in `~/.config/dev-env/optional-packages.conf`).
 
 ## Manual steps
 
