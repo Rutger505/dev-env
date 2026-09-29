@@ -1,3 +1,0 @@
-#!/bin/bash
-DEV_ENV="${DEV_ENV:-$HOME/.local/share/dev-env}"
-cd "$DEV_ENV" && stow --adopt --target="$HOME" .

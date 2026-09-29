@@ -1,10 +1,4 @@
-# Environment shared by the terminal and the desktop session. zsh sources it
-# from .zshenv, uwsm sources it for Hyprland through uwsm/env.d/50-dev-env, so
-# GUI apps (VS Code, JetBrains) see the same variables as a shell.
-#
-# uwsm runs this with /bin/sh, so keep it POSIX. systemd user services don't
-# go through uwsm and read environment.d/30-dev-env.conf instead: when adding
-# a variable here, add it there too.
+# Sourced by zsh and by uwsm (/bin/sh, keep it POSIX). Mirror changes in environment.d/dev-env.conf.
 
 path_prepend() {
   case ":$PATH:" in
@@ -65,9 +59,7 @@ path_prepend "$XDG_DATA_HOME/opencode/bin"
 path_prepend "/usr/libexec/imv"
 path_prepend "$CARGO_HOME/bin"
 
-# espup installs the Xtensa toolchain under a versioned directory, which is
-# why these can't live in environment.d. LIBCLANG_PATH is for bindgen /
-# esp-idf-sys, the GCC bin directory is the Xtensa linker.
+# espup installs the Xtensa toolchain under versioned directories
 for esp_dir in "$RUSTUP_HOME"/toolchains/esp/xtensa-esp32-elf-clang/*/esp-clang/lib; do
   [ -d "$esp_dir" ] && export LIBCLANG_PATH="$esp_dir"
 done
@@ -76,9 +68,7 @@ for esp_dir in "$RUSTUP_HOME"/toolchains/esp/xtensa-esp-elf/*/xtensa-esp-elf/bin
 done
 unset esp_dir
 
-# espup / espflash / cargo-espflash live outside the dev-env repo so that
-# dropping binaries in ~/.local/bin (which is stowed from this repo) cannot
-# leave the working tree dirty and block dev-env-update-self.
+# Not ~/.local/bin: that is stowed, so new binaries there would dirty the repo
 path_prepend "$XDG_DATA_HOME/esp-tools/bin"
 
 export PATH

@@ -1,4 +1,3 @@
-# OpenClaw Completion
-[ -f '/home/openclaw/.openclaw/completions/openclaw.zsh' ] && source '/home/openclaw/.openclaw/completions/openclaw.zsh'
+[ -f ~/.openclaw/completions/openclaw.zsh ] && source ~/.openclaw/completions/openclaw.zsh
 
 alias openclaw="bunx --bun openclaw"

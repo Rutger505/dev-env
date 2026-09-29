@@ -1,22 +1,15 @@
-source $ZSH_CONFIG_DIR/tmux.zsh
+source $ZDOTDIR/tmux.zsh
 
-###### ZSH / Oh My Zsh ######
 ZSH_THEME="robbyrussell"
-CASE_SENSITIVE="false"
-HYPHEN_INSENSITIVE="false"
-
 zstyle ':omz:update' mode disabled
-
 VI_MODE_SET_CURSOR=true
 
 plugins=(
   git
   sudo
   safe-paste
-  # System
   archlinux
   systemd
-  # Enhancements
   zsh-autosuggestions
   zsh-syntax-highlighting
   eza
@@ -26,28 +19,23 @@ plugins=(
   fzf
   copyfile
   colorize
-  # Container
   docker
   kubectl
-  # JavaScript / TypeScript / Node.js
   node
   npm
   fnm
   bun
-  # Python
   python
   pip
-  # Fun
   lol
 )
 
 source $ZSH/oh-my-zsh.sh
 
-# After oh-my-zsh: it sets its own history options in lib/history.zsh
-source $ZSH_CONFIG_DIR/history.zsh
+# oh-my-zsh sets its own history options, so ours have to come after it
+source $ZDOTDIR/history.zsh
+source $ZDOTDIR/aliases.zsh
 
-source $ZSH_CONFIG_DIR/aliases.zsh
-
-for file in $ZSH_CONFIG_DIR/packages/*.zsh; do
-  [ -r "$file" ] && source "$file"
+for file in $ZDOTDIR/packages/*.zsh; do
+  source "$file"
 done

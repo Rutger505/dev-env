@@ -2,9 +2,7 @@
 \.gitignore
 \.idea
 ^/README.*
-^/TODO.*
 ^/CLAUDE.*
+^/install.*
+^/scripts
 /\.claude/(?!CLAUDE\.md$|settings\.json$|skills($|/)).*
-applications
-synchronization
-scripts
