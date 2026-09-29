@@ -1,0 +1,40 @@
+# Removed by remove-unused-applications.sh. Not under optional/ or packages.lst, those get installed.
+
+libreoffice-fresh        # last opened Dec 2025
+kdenlive                 # omacut covers clip trimming
+localsend                # clipcdn covers sharing
+cliamp                   # Spotify is installed
+obsidian                 # last opened May 2026
+pinta                    # drags in dotnet-runtime for a Paint clone
+aether                   # themes are pinned
+herdr                    # bash-only shell integration, this machine runs zsh
+xournalpp                # never used
+moonlight-qt             # this machine is the streaming host, not the client
+omawrite                 # VSCode/nvim
+omacalc                  # qalculate
+tobi-try                 # toy
+ttfx                     # toy
+
+dotnet-runtime           # only pinta needed it
+libvips                  # nothing requires it
+mariadb-libs             # optional dep of libreoffice-fresh only
+postgresql-libs          # optional dep of libreoffice-fresh only
+python-poetry-core       # poetry isn't installed
+luarocks                 # lazy.nvim never invokes it and bootstraps its own if needed
+qemu-user-static-binfmt  # qemu-user-static isn't installed, so the rules bind nothing
+
+asdcontrol               # Apple displays
+bolt                     # no Thunderbolt
+
+gnome-disk-utility       # gparted + udisks2
+foot                     # Ghostty is the terminal
+alacritty                # Omarchy 3 leftover
+kitty                    # Omarchy 3 leftover
+
+losslesscut-bin          # omacut does the same
+openai-codex-desktop     # offered by Omarchy's Install > AI menu
+discover-overlay         # Discord overlay
+gnome-multi-writer       # balena-etcher
+typora                   # VSCode/nvim
+signal-desktop           # Omarchy 3 leftover
+1password-beta           # Bitwarden

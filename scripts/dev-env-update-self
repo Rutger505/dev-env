@@ -1,58 +1,30 @@
-#!/usr/bin/env zsh
+#!/bin/bash
 
-DEV_ENV="${DEV_ENV:-${XDG_DATA_HOME:-$HOME/.local/share}/dev-env}"
+cd "$(dirname "$(realpath "$0")")/.." || exit 1
+error_file="${DEV_ENV_ERROR_FILE:-$HOME/.local/state/dev-env-sync-error}"
 
-create_error_file() {
-  touch "$DEV_ENV_ERROR_FILE"
+fail() {
+  echo "$1"
+  touch "$error_file"
+  exit 1
 }
 
-echo "Script started at $(date)"
-echo "Changing directory to $DEV_ENV"
-cd "$DEV_ENV" || { create_error_file && exit 1 }
-
-SPELL_FILE=".config/nvim/spell/en.utf-8.add"
-if ! git diff --quiet HEAD -- "$SPELL_FILE"; then
-  echo "Committing spell file changes"
-  git commit --quiet -m "chore(nvim): update spell word list" -- "$SPELL_FILE" || { create_error_file; exit 1; }
+spell_file=.config/nvim/spell/en.utf-8.add
+if ! git diff --quiet HEAD -- "$spell_file"; then
+  git commit --quiet -m "chore(nvim): update spell word list" -- "$spell_file" || fail "Committing the spell file failed"
 fi
 
-# Check for uncommitted changes
-if ! git diff --quiet || ! git diff --cached --quiet; then
-  echo "Repository has uncommitted changes, aborting"
-  create_error_file
-  exit 1
+git diff --quiet HEAD || fail "Repository has uncommitted changes"
+git fetch || fail "Fetch failed"
+
+if [ -n "$(git rev-list '@{upstream}..@')" ]; then
+  git push || fail "Push failed"
 fi
 
-git fetch
-
-UNPUSHED=$(git rev-list --count @{upstream}..@)
-if [ "$UNPUSHED" -gt 0 ]; then
-  echo "Found $UNPUSHED unpushed commit(s), pushing..."
-  git push || { create_error_file; exit 1; }
-fi
-
-# Compare head to upstream
-if git diff --quiet @ @{upstream} && [ ! -f "$DEV_ENV_ERROR_FILE" ]; then
-  echo "Nothing changed"
+if git diff --quiet @ '@{upstream}' && [ ! -f "$error_file" ]; then
   exit 0
 fi
 
-# If HEAD can't be fast-forwarded to upstream, abort
-if ! git merge-base --is-ancestor @ @{upstream}; then
-  echo "Local branch is ahead/diverged, aborting"
-
-  create_error_file
-
-  exit 1
-fi
-
-git pull --ff-only || { create_error_file && exit 1 }
-stow --adopt --target="$HOME" . || { create_error_file && exit 1 }
-
-# Compary what is in @ and not in @{upstream}
-if ! git diff --quiet @{upstream} @; then
-  echo "Unpushed changes. Pushing.."
-  git push || { create_error_file && exit 1 }
-fi
-
-rm -f "$DEV_ENV_ERROR_FILE"
+git merge --ff-only '@{upstream}' || fail "Local branch diverged from upstream"
+stow --adopt --restow --target="$HOME" . || fail "Stow failed"
+rm -f "$error_file"

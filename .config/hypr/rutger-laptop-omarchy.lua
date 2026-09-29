@@ -1,13 +1,9 @@
--- Host-specific setup for rutger-laptop-omarchy.
--- Ported from the old custom-rutger-laptop-omarchy.conf.
-
 hl.on("hyprland.start", function()
   hl.exec_cmd("[workspace 1 silent] uwsm app -- zen-browser")
 
   hl.exec_cmd("[workspace 3 silent] uwsm app -- ghostty")
 
-  -- Discord starts a popup initially, then the actual window that does not
-  -- follow the workspace annotation.
+  -- Discord's real window appears after a popup and ignores the workspace annotation
   hl.exec_cmd("hyprctl dispatch workspace 4")
   hl.exec_cmd("[workspace 4 silent] uwsm app -- discord")
 
@@ -33,3 +29,5 @@ hl.env("VDPAU_DRIVER", "radeonsi")
 -- resume it from D3cold. Vulkan apps therefore only see the iGPU.
 hl.env("AQ_DRM_DEVICES", "/dev/dri/amd-igpu")
 hl.env("VK_ICD_FILENAMES", "/usr/share/vulkan/icd.d/radeon_icd.json")
+
+o.window("^discord$", { workspace = "4" })
