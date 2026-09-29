@@ -44,6 +44,9 @@ select_optional_groups() {
 }
 
 link_configs() {
+  # Missing directories get folded into a symlink to the repo, and apps write keys, credentials and unit links into these
+  mkdir -p -m 700 "$HOME/.ssh" "$HOME/.claude" "$HOME/.local/bin" "$HOME/.config/systemd/user"
+
   # Omarchy ships its own hypr, git, tmux and starship configs: adopt them to get past the conflicts, then restore ours.
   # Only on a clean tree, the restore would discard local changes.
   if git -C .. diff --quiet HEAD; then
