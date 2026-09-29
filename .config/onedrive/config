@@ -1,8 +1,9 @@
-sync_dir = "~/School"
+# Local directory that mirrors the remote folder selected in sync_list
+sync_dir = "/home/rutger/School"
 
+# Skip editor/office temporary files
 skip_file = "~*|.~*|*.tmp|*.swp|*.partial"
 
-# Seconds between remote change checks in monitor mode
+# Check for remote changes every 5 minutes while in monitor mode
 monitor_interval = "300"
-
 use_recycle_bin = "true"
