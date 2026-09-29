@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# Configures the abraunegg OneDrive client to sync a single remote folder into
-# a local directory of choice (default: ~/School), instead of creating a
-# ~/OneDrive folder in the home directory.
+# Authenticates the abraunegg OneDrive client. The config and sync_list are
+# stowed from .config/onedrive, syncing the remote School folder into ~/School.
 
 set -euo pipefail
 
@@ -12,40 +11,8 @@ if ! command -v onedrive &> /dev/null; then
 fi
 
 CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/onedrive"
-CONFIG_FILE="$CONFIG_DIR/config"
-SYNC_LIST_FILE="$CONFIG_DIR/sync_list"
 
-ONEDRIVE_SYNC_DIR="${ONEDRIVE_SYNC_DIR:-$HOME/School}"
-ONEDRIVE_REMOTE_DIR="${ONEDRIVE_REMOTE_DIR:-School}"
-
-mkdir -p "$CONFIG_DIR"
-mkdir -p "$ONEDRIVE_SYNC_DIR"
-
-if [[ -f "$CONFIG_FILE" ]]; then
-  echo "OneDrive config already exists at $CONFIG_FILE, leaving it untouched"
-else
-  echo "Writing OneDrive config to $CONFIG_FILE"
-  cat > "$CONFIG_FILE" <<EOF
-# Local directory that mirrors the remote folder selected in sync_list
-sync_dir = "$ONEDRIVE_SYNC_DIR"
-
-# Skip editor/office temporary files
-skip_file = "~*|.~*|*.tmp|*.swp|*.partial"
-
-# Check for remote changes every 5 minutes while in monitor mode
-monitor_interval = "300"
-EOF
-fi
-
-if [[ -f "$SYNC_LIST_FILE" ]]; then
-  echo "OneDrive sync_list already exists at $SYNC_LIST_FILE, leaving it untouched"
-else
-  echo "Writing OneDrive sync_list to $SYNC_LIST_FILE"
-  cat > "$SYNC_LIST_FILE" <<EOF
-# Only sync this remote OneDrive folder
-$ONEDRIVE_REMOTE_DIR/*
-EOF
-fi
+mkdir -p "$HOME/School"
 
 # Authenticate if no refresh token is present yet.
 # The client prints a URL, you log in and paste the redirected URL back.
