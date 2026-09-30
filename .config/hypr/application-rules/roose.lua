@@ -1,2 +1,4 @@
--- Float roose's VSCode notes as soon as their identifying filename appears in the title.
-o.window({ class = "^code$", title = "^roose-spawned-.*" }, { float = true })
+-- Float roose-spawned documents and images immediately, before roose animates them in.
+o.window({ title = "^roose-spawned-.*" }, { float = true })
+-- Keep the dragged-in image windows visible across workspaces.
+o.window({ class = "^imv$", title = "^roose-spawned-.*" }, { float = true, pin = true })
