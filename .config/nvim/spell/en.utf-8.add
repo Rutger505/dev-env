@@ -69,3 +69,5 @@ PSRAM
 rustc
 geinlined
 ISR
+IVT
+triggeren
