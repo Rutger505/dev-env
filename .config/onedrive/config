@@ -1,8 +1,11 @@
 # Local root of the OneDrive; sync_list limits it to ~/Documents/School
 sync_dir = "/home/rutger/Documents"
 
-# Skip editor/office temporary files
-skip_file = "~*|.~*|*.tmp|*.swp|*.partial"
+# Skip editor/office temporary files (4913 is nvim's write test file)
+skip_file = "~*|.~*|*~|*.tmp|*.swp|*.partial|4913"
+
+# Git rewrites its internals with lock files and renames, which OneDrive races and corrupts
+skip_dir = ".git"
 
 # Check for remote changes every 5 minutes while in monitor mode
 monitor_interval = "300"
