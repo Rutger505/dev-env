@@ -56,3 +56,4 @@ Notes on things that still need fixing. Remove an item once it's fixed.
 - nvim `C-d`/`C-u` doesn't smooth scroll on the laptop (works on the desktop)
 - Navigate Hyprland windows with `Super + h/j/k/l`, like in tmux
 - Shorten the key repeat delay, so holding a key starts repeating sooner
+- Simplify nvim suggestions: there are three accept keys (`C-y` completion menu, `M-l` inline completion, `M-y` sidekick next edit) and their suggestions overlap on screen
