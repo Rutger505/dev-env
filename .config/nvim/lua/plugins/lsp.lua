@@ -36,6 +36,11 @@ return {
 			-- Set capabilities globally for all servers
 			vim.lsp.config("*", { capabilities = capabilities })
 
+			-- Next edit suggestions apply edits at positions the server computed. With the
+			-- default 150ms debounce the server's document lags the buffer while typing, so
+			-- those positions land in the wrong place and scramble the text.
+			vim.lsp.config("copilot", { flags = { debounce_text_changes = 0 } })
+
 			-- Enable all servers installed via mason-lspconfig
 			vim.lsp.enable(require("mason-lspconfig").get_installed_servers())
 
