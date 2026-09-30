@@ -55,3 +55,4 @@ Notes on things that still need fixing. Remove an item once it's fixed.
 - Increase tmux scroll speed by 50%
 - nvim `C-d`/`C-u` doesn't smooth scroll on the laptop (works on the desktop)
 - Navigate Hyprland windows with `Super + h/j/k/l`, like in tmux
+- Shorten the key repeat delay, so holding a key starts repeating sooner
