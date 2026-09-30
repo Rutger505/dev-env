@@ -50,4 +50,8 @@ clipcdn --list
 
 ## TODO
 
+Notes on things that still need fixing. Remove an item once it's fixed.
+
 - Persist not locking on idle (Omarchy)
+- Increase tmux scroll speed by 50%
+- nvim `C-d`/`C-u` doesn't smooth scroll on the laptop (works on the desktop)
