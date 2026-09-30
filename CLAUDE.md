@@ -6,7 +6,9 @@ Setup for my Omarchy (Arch + Hyprland) machines: packages, dotfiles linked with 
 
 Commit directly to `main`, no feature branch needed. This overrides the global branch-first rule for this repo.
 
-The live checkout is `~/.local/share/dev-env`. The `dev-env-update-self` timer runs every minute there: it commits the nvim spell file, pushes local commits, fast-forwards to `origin/main` and restows. It refuses to run on a dirty tree and then touches `$DEV_ENV_ERROR_FILE`, which makes every new zsh print a sync error. Don't leave uncommitted changes in the live checkout.
+Only commit when I ask for it. Finish the change, tell me what you did, and leave it at that, so I can review it before it exists as a commit.
+
+The live checkout is `~/.local/share/dev-env`. The `dev-env-update-self` timer runs every minute there: it commits the nvim spell file, pushes local commits, fast-forwards to `origin/main` and restows. It refuses to run on a dirty tree and then touches `$DEV_ENV_ERROR_FILE`, which makes every new zsh print a sync error. So don't walk away from a dirty tree: a change I haven't committed yet blocks the sync, and a commit I haven't asked for is on my other machines within a minute. Point out the dirty tree if it stays that way, and let me decide.
 
 ## Layout
 
