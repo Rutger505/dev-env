@@ -59,3 +59,4 @@ Notes on things that still need fixing. Remove an item once it's fixed.
 - Simplify nvim suggestions: there are three accept keys (`C-y` completion menu, `M-l` inline completion, `M-y` sidekick next edit) and their suggestions overlap on screen
 - tmux copy mode: yanking only works after `V`, not after `v` (default `v` is `rectangle-toggle` instead of `begin-selection`)
 - Replace Omarchy's universal copy/paste (`Super + C/V`) so it sends real key events, also into panels like the Proxmox VNC console
+- nvim: open Neo-tree in the current file's directory instead of the directory nvim was started from
