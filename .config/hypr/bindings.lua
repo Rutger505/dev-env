@@ -13,5 +13,8 @@ o.bind("PRINT", "GSR screenshot", "gsr-ui-cli take-screenshot")
 o.bind("ALT + CONTROL + PRINT", "GSR screenshot window", "gsr-ui-cli take-screenshot-window")
 o.bind("ALT + SHIFT + PRINT", "GSR screenshot region", "gsr-ui-cli take-screenshot-region")
 
+-- The autoclicker runs on XWayland and can't see global key presses on Wayland
+o.bind("ALT + F6", "Autoclicker toggle", "useful-autoclicker --toggle")
+
 -- The preinstalls-removed marker disables Omarchy's app bindings, and its launcher lacks the wayland flag
 o.bind("SUPER + SHIFT + M", "Music", { focus = "spotify", launch = "spotify --ozone-platform=wayland" })
