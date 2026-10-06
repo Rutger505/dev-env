@@ -1,3 +1,3 @@
 #!/bin/bash
 # The laptop session limits VK_ICD_FILENAMES to the iGPU, which hides the dGPU from prime-run's Vulkan layer
-exec env -u VK_ICD_FILENAMES prime-run "$@"
+VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json exec prime-run "$@"
