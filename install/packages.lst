@@ -6,6 +6,7 @@ udisks2
 which
 fakeroot
 kanata
+ydotool
 nwg-displays
 
 zsh
