@@ -22,6 +22,7 @@ return {
 				},
 			},
 			filesystem = {
+				bind_to_cwd = false,
 				hijack_netrw_behavior = "disabled",
 				use_libuv_file_watcher = true,
 			},
