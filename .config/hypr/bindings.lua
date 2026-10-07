@@ -38,4 +38,5 @@ local function type_clipboard()
 end
 
 hl.unbind("SUPER + C")
-o.rebind("SUPER + V", "Type clipboard", type_clipboard)
+hl.unbind("SUPER + V")
+o.bind("SUPER + V", "Type clipboard", type_clipboard)
