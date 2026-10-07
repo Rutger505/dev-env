@@ -51,5 +51,3 @@ clipcdn --list
 ## TODO
 
 Notes on things that still need fixing. Remove an item once it's fixed.
-
-- Increase tmux scroll speed by 50%
