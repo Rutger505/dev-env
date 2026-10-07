@@ -6,6 +6,7 @@ require("hypr.monitors")
 require("hypr.input")
 require("hypr.bindings")
 require("hypr.looknfeel")
+require("hypr.autostart")
 
 local paths = require("default.hypr.paths")
 local hypr_dir = paths.config_home .. "/hypr"
