@@ -4,9 +4,10 @@ return {
 		branch = "v3.x",
 		cmd = { "Neotree" },
 		init = function()
+			local root = vim.fn.argc() > 0 and vim.fn.fnamemodify(vim.fn.argv(0), ":p:h") or vim.fn.getcwd()
 			vim.api.nvim_create_autocmd({ "VimEnter", "TabNew" }, {
 				callback = function()
-					vim.cmd("Neotree show")
+					require("neo-tree.command").execute({ action = "show", dir = root })
 				end,
 			})
 		end,
