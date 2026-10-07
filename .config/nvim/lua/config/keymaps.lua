@@ -82,7 +82,7 @@ vim.keymap.set("n", "[h", function() require("gitsigns").prev_hunk() end, { desc
 vim.keymap.set("n", "]h", function() require("gitsigns").next_hunk() end, { desc = "Next Hunk" })
 
 -- Sidekick (AI CLI + next edit suggestions)
-vim.keymap.set("n", "<M-y>", function() require("sidekick").nes_jump_or_apply() end, { desc = "Goto/Apply Next Edit Suggestion" })
+vim.keymap.set("n", "<C-y>", function() return require("sidekick").nes_jump_or_apply() and "" or "<C-y>" end, { expr = true, desc = "Goto/Apply Next Edit Suggestion" })
 vim.keymap.set({ "n", "t", "i", "x" }, "<C-.>", function() require("sidekick.cli").focus() end, { desc = "Sidekick Focus" })
 vim.keymap.set("n", "<leader>aa", function() require("sidekick.cli").toggle({ name = "claude", focus = true }) end, { desc = "Toggle Claude" })
 vim.keymap.set("n", "<leader>as", function() require("sidekick.cli").select() end,                          { desc = "Select CLI" })

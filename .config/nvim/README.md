@@ -114,8 +114,7 @@ Use `(`, `[` or `{` to add inner spaces, `)`, `]` or `}` for none. `t` surrounds
 
 | Key | Action |
 |-----|--------|
-| `<M-y>` (Alt+y) | Jump to / apply next edit suggestion (normal + insert; leaves insert mode first) |
-| `<M-l>` (Alt+l) | Accept ghost text (insert) |
+| `<C-y>` | Accept the active suggestion (see below) |
 | `<C-.>` | Focus the AI CLI window (any mode) |
 | `<leader>aa` | Toggle Claude |
 | `<leader>as` | Pick a CLI tool |
@@ -126,6 +125,8 @@ Use `(`, `[` or `{` to add inner spaces, `)`, `]` or `}` for none. `t` surrounds
 | `<leader>ap` | Pick a prompt (normal + visual) |
 
 Ghost text at the cursor (Neovim's built-in `vim.lsp.inline_completion`) and next edit suggestions for other lines (sidekick) both come from the Copilot language server, which Mason installs. Next edit suggestions update while you type in insert mode too, and survive leaving insert mode. If nothing shows up, sign in with `:LspCopilotSignIn`.
+
+`<C-y>` accepts the first of these that is showing: the completion menu item, the ghost text, the next edit suggestion (jumping to it first if it's elsewhere). In insert mode applying a next edit suggestion leaves insert mode. With nothing showing, `<C-y>` keeps its normal meaning. While the completion menu is open, ghost text and next edit suggestions are hidden. Use `<C-n>`/`<C-p>` to pick a menu item and `<C-e>` to close the menu.
 
 ### Spelling
 

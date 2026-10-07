@@ -53,4 +53,3 @@ clipcdn --list
 Notes on things that still need fixing. Remove an item once it's fixed.
 
 - Increase tmux scroll speed by 50%
-- Simplify nvim suggestions: there are three accept keys (`C-y` completion menu, `M-l` inline completion, `M-y` sidekick next edit) and their suggestions overlap on screen
