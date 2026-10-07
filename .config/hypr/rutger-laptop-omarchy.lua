@@ -6,6 +6,7 @@ hl.on("hyprland.start", function()
   -- Discord's real window appears after a popup and ignores the workspace annotation
   hl.exec_cmd("hyprctl dispatch workspace 4")
   hl.exec_cmd("[workspace 4 silent] uwsm app -- discord")
+  hl.exec_cmd("[workspace 4 silent] uwsm app -- Snapchat.desktop")
 
   hl.exec_cmd("[workspace 5 silent] uwsm app -- spotify --ozone-platform=wayland")
 end)
