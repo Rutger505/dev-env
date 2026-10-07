@@ -30,5 +30,16 @@ sudo tee /etc/kanata/kanata.conf >/dev/null <<EOF
   caps esc)
 EOF
 
+sudo mkdir -p /etc/systemd/system-sleep
+sudo tee /etc/systemd/system-sleep/kanata >/dev/null <<'EOF'
+#!/bin/bash
+# kanata's grab surviving suspend leaves the keyboard dead for seconds after resume
+case $1 in
+  pre) systemctl stop kanata.service ;;
+  post) systemctl start kanata.service ;;
+esac
+EOF
+sudo chmod +x /etc/systemd/system-sleep/kanata
+
 sudo systemctl daemon-reload
 sudo systemctl enable --now kanata.service
