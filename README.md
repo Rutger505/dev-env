@@ -52,3 +52,4 @@ clipcdn --list
 
 Notes on things that still need fixing. Remove an item once it's fixed.
 
+- kanata doesn't start after logging in from the quickshell lockscreen.
