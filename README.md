@@ -52,4 +52,3 @@ clipcdn --list
 
 Notes on things that still need fixing. Remove an item once it's fixed.
 
-- tmux: a new terminal should always take session `0` when it is free: create and attach it if it doesn't exist (e.g. after closing its last pane), or attach it if no client is attached. Otherwise keep the current highest attached session number + 1 logic
