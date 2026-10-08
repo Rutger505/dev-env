@@ -52,4 +52,3 @@ clipcdn --list
 
 Notes on things that still need fixing. Remove an item once it's fixed.
 
-- Start kanata after unlocking the quickshell lockscreen instead of in the systemd-sleep hook's `post` step.
