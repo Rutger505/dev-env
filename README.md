@@ -52,4 +52,4 @@ clipcdn --list
 
 Notes on things that still need fixing. Remove an item once it's fixed.
 
-- tmux: when a new terminal opens, reuse a session that has no client attached (like `0` after closing its terminal) instead of creating the highest attached session number + 1
+- tmux: a new terminal should always take session `0` when it is free: create and attach it if it doesn't exist (e.g. after closing its last pane), or attach it if no client is attached. Otherwise keep the current highest attached session number + 1 logic
