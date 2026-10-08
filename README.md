@@ -51,3 +51,5 @@ clipcdn --list
 ## TODO
 
 Notes on things that still need fixing. Remove an item once it's fixed.
+
+- tmux: when a new terminal opens, reuse a session that has no client attached (like `0` after closing its terminal) instead of creating the highest attached session number + 1
