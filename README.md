@@ -31,15 +31,18 @@ Packages, dotfiles and scripts for my Omarchy (Arch + Hyprland) machines.
 
 ## CDN
 
-`Super + C` saves the GSR replay, uploads it to my MinIO CDN and copies the URL. Needs the `cdn` optional group and a one-time alias:
+`Super + C` saves the GSR replay, uploads it to my SeaweedFS CDN and copies the URL. Needs the `cdn` optional group and a one-time alias with the admin keys from the `seaweedfs-s3-credentials` secret:
 
 ```bash
-mcli alias set homecdn https://cdn.rutgerpronk.com <access-key> <secret-key>
+key() { kubectl -n seaweedfs get secret seaweedfs-s3-credentials -o jsonpath="{.data.$1}" | base64 -d; }
+mcli alias set homecdn https://cdn.rutgerpronk.com "$(key admin_access_key_id)" "$(key admin_secret_access_key)"
 ```
 
+One bucket per use case, `clips` and `artifacts`:
+
 ```bash
-mcli cp app-debug.apk homecdn/cdn/artifacts/  # -> https://cdn.rutgerpronk.com/cdn/artifacts/app-debug.apk
-mcli ls --recursive homecdn/cdn
+mcli cp app-debug.apk homecdn/artifacts/  # -> https://cdn.rutgerpronk.com/artifacts/app-debug.apk
+mcli ls --recursive homecdn
 ```
 
 ## TODO
