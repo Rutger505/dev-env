@@ -27,4 +27,5 @@ fi
 
 git merge --ff-only '@{upstream}' || fail "Local branch diverged from upstream"
 stow --adopt --restow --target="$HOME" . || fail "Stow failed"
+systemctl --user daemon-reload || fail "Reloading user units failed"
 rm -f "$error_file"

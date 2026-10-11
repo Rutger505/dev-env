@@ -48,7 +48,7 @@ export VISUAL="nvim"
 export PAGER="less"
 
 path_append "$HOME/.local/bin"
-path_append "$DEV_ENV/scripts"
+path_append "$DEV_ENV/bin"
 path_append "$VCPKG_ROOT"
 path_append "$PLATFORMIO_CORE_DIR/penv/bin"
 

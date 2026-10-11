@@ -17,7 +17,7 @@ The live checkout is `~/.local/share/dev-env`. The `dev-env-update-self` timer r
 - `install/optional/<group>.lst` / `<group>.sh`: optional groups. The group name is the file name, a group can have a list, a script, or both.
 - `install/*.sh`: setup steps, run alphabetically after the packages are installed.
 - `install/omarchy-bloat.lst`: Omarchy packages that `install/remove-unused-applications.sh` removes.
-- `scripts/`: on `PATH`, not stowed.
+- `bin/`: on `PATH`, not stowed.
 - Everything else (`.config/`, `.claude/`, `.ssh/`) is stowed into `$HOME`. `.stow-local-ignore` lists what isn't.
 
 ## Rules

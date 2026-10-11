@@ -3,4 +3,4 @@ Description=Update dev-env repo
 
 [Service]
 Type=oneshot
-ExecStart=%h/.local/share/dev-env/scripts/dev-env-update-self
+ExecStart=%h/.local/share/dev-env/bin/dev-env-update-self

@@ -4,5 +4,6 @@
 ^/README.*
 ^/CLAUDE.*
 ^/install.*
+^/bin
 ^/scripts
 /\.claude/(?!CLAUDE\.md$|settings\.json$|skills($|/)).*
