@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euo pipefail
+trap 'notify-send -u critical "Clip delen mislukt"' ERR
 
 clips_dir="$HOME/Videos/Clips"
 
@@ -24,14 +25,9 @@ for _ in $(seq 1 60); do
   fi
 done
 
-[ -n "$clip" ] || { notify-send "clip-share" "geen nieuwe clip gevonden"; exit 1; }
+[ -n "$clip" ]
 
-base="$(basename "$clip")"
-key="clips/$(echo "$base" | tr ' ' '_' | tr -cd 'A-Za-z0-9._-')"
-
-notify-send "clip uploaden…" "$base"
+key="clips/$(basename "$clip" | tr ' ' '_' | tr -cd 'A-Za-z0-9._-')"
 mcli cp "$clip" "homecdn/cdn/$key" >/dev/null
-url="https://cdn.rutgerpronk.com/cdn/$key"
-
-printf '%s' "$url" | wl-copy
-notify-send "clip geüpload 📋" "$url"
+printf '%s' "https://cdn.rutgerpronk.com/cdn/$key" | wl-copy
+notify-send "Clip geüpload" "URL gekopieerd naar klembord"
