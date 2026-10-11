@@ -1,7 +1,6 @@
 .idea
 *.log
 .claude/settings.local.json
-.config/clipcdn/config
 .config/nvim/spell/*.spl
 
 # onedrive keeps its refresh_token and sync database next to the config

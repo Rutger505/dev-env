@@ -29,23 +29,17 @@ Packages, dotfiles and scripts for my Omarchy (Arch + Hyprland) machines.
 - **VS Code**: log in and sync settings.
 - **Steam** (gaming group): sign in, install games.
 
-## clipcdn
+## CDN
 
-`clipcdn` uploads files to my MinIO CDN (`cdn.rutgerpronk.com`) and prints the URL. Needs the `clipcdn` optional group.
+`Super + C` saves the GSR replay, uploads it to my MinIO CDN and copies the URL. Needs the `cdn` optional group and a one-time alias:
 
 ```bash
-cp ~/.config/clipcdn/config.example ~/.config/clipcdn/config
-chmod 600 ~/.config/clipcdn/config
-$EDITOR ~/.config/clipcdn/config
-clipcdn --setup
+mcli alias set homecdn https://cdn.rutgerpronk.com <access-key> <secret-key>
 ```
 
 ```bash
-clipcdn clip.mp4                  # -> https://cdn.rutgerpronk.com/cdn/clip.mp4
-clipcdn clip.mp4 clips/funny.mp4  # custom remote path
-clipcdn --clips                   # sync ~/Videos/Clips -> <bucket>/clips
-clipcdn --artifact app-debug.apk  # upload to <bucket>/artifacts
-clipcdn --list
+mcli cp app-debug.apk homecdn/cdn/artifacts/  # -> https://cdn.rutgerpronk.com/cdn/artifacts/app-debug.apk
+mcli ls --recursive homecdn/cdn
 ```
 
 ## TODO

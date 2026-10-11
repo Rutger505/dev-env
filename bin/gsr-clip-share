@@ -1,57 +1,37 @@
 #!/bin/bash
-#
-# gsr-clip-share — trigger a GPU Screen Recorder save action, then upload the
-# resulting clip to my MinIO CDN (via clipcdn) and copy the shareable URL to the
-# clipboard. Bound to the replay-save hotkeys in hypr/bindings.lua.
-#
-# Usage: gsr-clip-share [gsr-ui-cli save action]
-#   default action: replay-save
-#   e.g. gsr-clip-share replay-save-1-min
-#
 set -euo pipefail
 
-ACTION="${1:-replay-save}"
-CLIPS_DIR="${CLIPS_DIR:-$HOME/Videos/Clips}"
-
-note() { command -v notify-send >/dev/null 2>&1 && notify-send "$@" || echo "$*" >&2; }
+clips_dir="$HOME/Videos/Clips"
 
 newest() {
-  find "$CLIPS_DIR" -type f -name '*.mp4' -printf '%T@ %p\n' 2>/dev/null \
-    | sort -n | tail -1 | cut -d' ' -f2-
+  find "$clips_dir" -type f -name '*.mp4' -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2-
 }
 
 before="$(newest)"
 
-# Fire the GSR save. gsr-ui writes the file asynchronously.
-gsr-ui-cli "$ACTION"
+gsr-ui-cli "${1:-replay-save}"
 
-# Wait for a new, fully-written .mp4 to appear (max ~30s).
+# gsr-ui writes the clip asynchronously, wait until a new file stops growing
 clip=""
 for _ in $(seq 1 60); do
   sleep 0.5
   cand="$(newest)"
   if [ -n "$cand" ] && [ "$cand" != "$before" ]; then
-    s1=$(stat -c%s "$cand" 2>/dev/null || echo 0)
+    s1=$(stat -c%s "$cand")
     sleep 0.5
-    s2=$(stat -c%s "$cand" 2>/dev/null || echo 0)
+    s2=$(stat -c%s "$cand")
     if [ "$s1" = "$s2" ] && [ "$s1" -gt 0 ]; then clip="$cand"; break; fi
   fi
 done
 
-[ -n "$clip" ] || { note "clip-share" "geen nieuwe clip gevonden"; exit 1; }
+[ -n "$clip" ] || { notify-send "clip-share" "geen nieuwe clip gevonden"; exit 1; }
 
-# URL-safe remote key under clips/.
 base="$(basename "$clip")"
 key="clips/$(echo "$base" | tr ' ' '_' | tr -cd 'A-Za-z0-9._-')"
 
-note "clip uploaden…" "$base"
-url="$(clipcdn "$clip" "$key")"
+notify-send "clip uploaden…" "$base"
+mcli cp "$clip" "homecdn/cdn/$key" >/dev/null
+url="https://cdn.rutgerpronk.com/cdn/$key"
 
-if command -v wl-copy >/dev/null 2>&1; then
-  printf '%s' "$url" | wl-copy
-elif command -v xclip >/dev/null 2>&1; then
-  printf '%s' "$url" | xclip -selection clipboard
-fi
-
-note "clip geüpload 📋" "$url"
-echo "$url"
+printf '%s' "$url" | wl-copy
+notify-send "clip geüpload 📋" "$url"

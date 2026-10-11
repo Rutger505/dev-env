@@ -2,7 +2,7 @@
 
 libreoffice-fresh        # last opened Dec 2025
 kdenlive                 # omacut covers clip trimming
-localsend                # clipcdn covers sharing
+localsend                # Super + C uploads clips to the CDN
 cliamp                   # Spotify is installed
 obsidian                 # last opened May 2026
 pinta                    # drags in dotnet-runtime for a Paint clone
