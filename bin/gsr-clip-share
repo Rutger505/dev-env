@@ -27,7 +27,7 @@ done
 
 [ -n "$clip" ]
 
-key="clips/$(basename "$clip" | tr ' ' '_' | tr -cd 'A-Za-z0-9._-')"
-mcli cp "$clip" "homecdn/cdn/$key" >/dev/null
-printf '%s' "https://cdn.rutgerpronk.com/cdn/$key" | wl-copy
+name="$(basename "$clip" | tr ' ' '_' | tr -cd 'A-Za-z0-9._-')"
+mcli cp "$clip" "homecdn/clips/$name" >/dev/null
+printf '%s' "https://cdn.rutgerpronk.com/clips/$name" | wl-copy
 notify-send "Clip geüpload" "URL gekopieerd naar klembord"
