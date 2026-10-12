@@ -4,7 +4,16 @@ set -euo pipefail
 log() { printf '[gsr-clip-share] %s\n' "$*"; }
 trap 'log "failed at line $LINENO: $BASH_COMMAND"; notify-send -u critical "Clip delen mislukt"' ERR
 
-clips_dir="$HOME/Videos/Clips"
+# Where gsr-ui saves replays: replay.save_directory in its config (JSON, or
+# "key value" lines in older versions), else the XDG videos dir.
+gsr_config="${XDG_CONFIG_HOME:-$HOME/.config}/gpu-screen-recorder/config_ui"
+clips_dir=""
+if [ -f "$gsr_config" ]; then
+  clips_dir="$(jq -r '.replay.save_directory // empty' "$gsr_config" 2>/dev/null \
+    || sed -n 's/^replay\.save_directory //p' "$gsr_config")"
+fi
+clips_dir="${clips_dir:-$(xdg-user-dir VIDEOS 2>/dev/null || echo "$HOME/Videos")}"
+log "replay directory: $clips_dir"
 
 newest() {
   find "$clips_dir" -type f -name '*.mp4' -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2-
@@ -30,7 +39,7 @@ for _ in $(seq 1 60); do
 done
 
 if [ -z "$clip" ]; then
-  log "no new clip in $clips_dir after 60s"
+  log "no new clip in $clips_dir after 60s, is replay running in gsr-ui?"
   false
 fi
 log "clip: $clip ($(stat -c%s "$clip") bytes)"
