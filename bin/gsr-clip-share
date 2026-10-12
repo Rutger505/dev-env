@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
-trap 'notify-send -u critical "Clip delen mislukt"' ERR
+
+log() { printf '[gsr-clip-share] %s\n' "$*"; }
+trap 'log "failed at line $LINENO: $BASH_COMMAND"; notify-send -u critical "Clip delen mislukt"' ERR
 
 clips_dir="$HOME/Videos/Clips"
 
@@ -9,7 +11,9 @@ newest() {
 }
 
 before="$(newest)"
+log "newest clip before save: ${before:-none}"
 
+log "gsr-ui-cli ${1:-replay-save}"
 gsr-ui-cli "${1:-replay-save}"
 
 # gsr-ui writes the clip asynchronously, wait until a new file stops growing
@@ -25,9 +29,17 @@ for _ in $(seq 1 60); do
   fi
 done
 
-[ -n "$clip" ]
+if [ -z "$clip" ]; then
+  log "no new clip in $clips_dir after 60s"
+  false
+fi
+log "clip: $clip ($(stat -c%s "$clip") bytes)"
 
 name="$(basename "$clip" | tr ' ' '_' | tr -cd 'A-Za-z0-9._-')"
-mcli cp "$clip" "homecdn/clips/$name" >/dev/null
-printf '%s' "https://cdn.rutgerpronk.com/clips/$name" | wl-copy
+log "uploading to homecdn/clips/$name"
+mcli cp --quiet "$clip" "homecdn/clips/$name"
+
+url="https://cdn.rutgerpronk.com/clips/$name"
+printf '%s' "$url" | wl-copy
+log "uploaded: $url"
 notify-send "Clip geüpload" "URL gekopieerd naar klembord"
