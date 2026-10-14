@@ -28,6 +28,7 @@ Packages, dotfiles and scripts for my Omarchy (Arch + Hyprland) machines.
 - **Zen**: log in to sync and Bitwarden.
 - **VS Code**: log in and sync settings.
 - **Steam** (gaming group): sign in, install games.
+- **Tailscale** (tailscale group): log in through the URL the installer prints. `*.homelab.rutgerpronk.com` then works at home and away.
 
 ## CDN
 
