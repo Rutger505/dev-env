@@ -31,11 +31,12 @@ Packages, dotfiles and scripts for my Omarchy (Arch + Hyprland) machines.
 
 ## CDN
 
-`Super + C` saves the GSR replay, uploads it to my SeaweedFS CDN and copies the URL. Needs the `cdn` optional group and a one-time alias with the admin keys from the `seaweedfs-s3-credentials` secret:
+`Super + C` saves the GSR replay, uploads it to my SeaweedFS CDN and copies the URL. Needs the `cdn` optional group and a one-time alias with the admin keys. SeaweedFS runs on its own VM (`192.168.178.214`), and the keys are in its S3 config:
 
 ```bash
-key() { kubectl -n seaweedfs get secret seaweedfs-s3-credentials -o jsonpath="{.data.$1}" | base64 -d; }
-mcli alias set homecdn https://cdn.rutgerpronk.com "$(key admin_access_key_id)" "$(key admin_secret_access_key)"
+read -r access secret < <(ssh debian@192.168.178.214 sudo cat /etc/seaweedfs/s3.json \
+  | jq -r '.identities[0].credentials[0] | "\(.accessKey) \(.secretKey)"')
+mcli alias set homecdn https://cdn.rutgerpronk.com "$access" "$secret"
 ```
 
 One bucket per use case, `clips` and `artifacts`:

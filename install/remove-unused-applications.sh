@@ -33,5 +33,5 @@ touch "$HOME/.local/state/omarchy/preinstalls-removed"
 # pacman doesn't own the launchers Omarchy seeds, so they outlive their packages
 for app in Basecamp ChatGPT Discord GitHub HEY WhatsApp X YouTube Zoom "Google Contacts" "Google Maps" \
   "Google Messages" "Google Photos" Alacritty foot typora windows-vm; do
-  OMARCHY_REMOVE_NOTIFY=false omarchy-webapp-remove "$app"
+  OMARCHY_REMOVE_NOTIFY=false omarchy-webapp-remove "$app" || true
 done
