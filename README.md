@@ -49,5 +49,3 @@ mcli ls --recursive homecdn
 ## TODO
 
 Notes on things that still need fixing. Remove an item once it's fixed.
-
-- Discord config, it constantly changes, better to edit in place once with a script
