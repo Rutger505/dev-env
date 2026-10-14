@@ -64,9 +64,7 @@ link_configs() {
 }
 
 add_chaotic_aur
-# Provisioned VMs come with yay-bin, which conflicts with chaotic-aur's yay
-command -v yay >/dev/null || sudo pacman -S --needed --noconfirm yay
-sudo pacman -S --needed --noconfirm fzf stow
+sudo pacman -S --needed --noconfirm yay fzf stow
 link_configs
 select_optional_groups
 
