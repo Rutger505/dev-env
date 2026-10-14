@@ -75,6 +75,7 @@ scripts=(*.sh)
 while read -r group; do
   if [ -f "optional/$group.lst" ]; then lists+=("optional/$group.lst"); fi
   if [ -f "optional/$group.sh" ]; then scripts+=("optional/$group.sh"); fi
+  if [ -d "optional/$group" ]; then scripts+=("optional/$group"/*.sh); fi
 done <"$optional_file"
 
 mapfile -t packages < <(grep -h . "${lists[@]}")

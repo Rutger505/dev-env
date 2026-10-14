@@ -4,3 +4,5 @@
 sudo tee /etc/udev/rules.d/60-uinput-uaccess.rules >/dev/null <<'EOF'
 KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess", OPTIONS+="static_node=uinput"
 EOF
+
+systemctl --user enable ydotool.service
