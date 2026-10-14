@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ "$SHELL" != */zsh ]]; then
-  chsh -s /usr/bin/zsh
+  sudo chsh -s /usr/bin/zsh "$USER"
 fi
 
 if ! grep -qs 'export ZDOTDIR=' /etc/zsh/zshenv; then
