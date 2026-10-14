@@ -2,7 +2,6 @@
 
 # omarchy-settings ships a sudoers rule with a regex argument, which sudo-rs can't parse,
 # so it warns about the file on every sudo call until it's gone again
-sudo mkdir -p /etc/pacman.d/hooks
 sudo tee /etc/pacman.d/hooks/remove-omarchy-tzupdate.hook >/dev/null <<'EOF'
 [Trigger]
 Type = Path

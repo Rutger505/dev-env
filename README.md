@@ -1,6 +1,6 @@
 # dev-env
 
-Packages, dotfiles and scripts for my Omarchy (Arch + Hyprland) machines and Arch server VMs. Pick the `desktop` optional group on Omarchy machines, leave it off on VMs.
+Packages, dotfiles and scripts for my Omarchy (Arch + Hyprland) machines.
 
 ## Install
 

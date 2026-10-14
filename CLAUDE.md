@@ -1,6 +1,6 @@
 # dev-env
 
-Setup for my Omarchy (Arch + Hyprland) machines and my Arch server VMs (OpenClaw): packages, dotfiles linked with GNU Stow, and a few scripts. Desktop machines pick the `desktop` optional group, which holds everything that needs Omarchy or a desktop; the rest must work on a plain Arch VM too. Don't add distro detection or abstractions for other systems.
+Setup for my Omarchy (Arch + Hyprland) machines: packages, dotfiles linked with GNU Stow, and a few scripts. Omarchy is the only target. Don't add distro detection or abstractions for other systems.
 
 ## Git workflow
 
@@ -14,9 +14,9 @@ The live checkout is `~/.local/share/dev-env`. The `dev-env-update-self` timer r
 
 - `install.sh`: the installer. Adds chaotic-aur, stows the configs (adopting Omarchy's defaults and restoring ours), picks optional groups with fzf, installs `install/packages.lst` plus the chosen lists with yay, then runs `install/*.sh` and the chosen `install/optional/*.sh`. One run plus a reboot must give a finished machine.
 - `install/packages.lst`: packages every machine gets. One per line.
-- `install/optional/<group>.lst` / `<group>.sh` / `<group>/*.sh`: optional groups. The group name is the file name, a group can have a list, a script, a directory of scripts, or any mix.
+- `install/optional/<group>.lst` / `<group>.sh`: optional groups. The group name is the file name, a group can have a list, a script, or both.
 - `install/*.sh`: setup steps, run alphabetically after the packages are installed.
-- `install/optional/desktop/omarchy-bloat.lst`: Omarchy packages that `remove-unused-applications.sh` next to it removes.
+- `install/omarchy-bloat.lst`: Omarchy packages that `install/remove-unused-applications.sh` removes.
 - `bin/`: on `PATH`, not stowed.
 - Everything else (`.config/`, `.claude/`, `.ssh/`) is stowed into `$HOME`. `.stow-local-ignore` lists what isn't.
 

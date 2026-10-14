@@ -1,7 +1,13 @@
 cmake
 stow
+gparted
+flatpak
+udisks2
 which
 fakeroot
+kanata
+ydotool
+nwg-displays
 
 zsh
 tmux
@@ -24,7 +30,12 @@ xdg-ninja
 magic-wormhole
 ookla-speedtest-bin
 sudo-rs
-docker
 
+firefox
+zen-browser-bin
+bitwarden
+
+visual-studio-code-bin
+jetbrains-toolbox
 graphviz
 clang
