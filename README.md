@@ -31,3 +31,4 @@ git clone git@github.com:Rutger505/dev-env.git ~/.local/share/dev-env
 Remove an item once it's fixed.
 
 - Remove lazygit prompt to force push
+- Configure Tailscale on the moonshine node itself
