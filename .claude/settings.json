@@ -1,12 +1,13 @@
 {
-  "model": "opus",
   "env": {
     "DISABLE_AUTOUPDATER": "1"
   },
+  "model": "opus",
   "enabledPlugins": {
     "rust-analyzer-lsp@claude-plugins-official": true
   },
   "tui": "default",
   "skipDangerousModePermissionPrompt": true,
-  "theme": "dark"
+  "theme": "dark",
+  "switchModelsOnFlag": false
 }
