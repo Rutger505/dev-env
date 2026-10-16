@@ -29,5 +29,3 @@ git clone git@github.com:Rutger505/dev-env.git ~/.local/share/dev-env
 ## TODO
 
 Remove an item once it's fixed.
-
-- Remove lazygit prompt to force push
