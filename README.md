@@ -20,7 +20,7 @@ git clone git@github.com:Rutger505/dev-env.git ~/.local/share/dev-env
 - `sunshine` group (desktop): after the reboot open https://localhost:47990, create the admin login, and enter the PIN Moonlight shows when pairing. The `moonlight` group is the client only (laptop).
 - `cdn` group: one-time `mcli` alias with the SeaweedFS admin keys:
   ```bash
-  read -r access secret < <(ssh debian@192.168.178.214 sudo cat /etc/seaweedfs/s3.json \
+  read -r access secret < <(ssh debian@192.168.1.214 sudo cat /etc/seaweedfs/s3.json \
     | jq -r '.identities[0].credentials[0] | "\(.accessKey) \(.secretKey)"')
   mcli alias set homecdn https://cdn.rutgerpronk.com "$access" "$secret"
   ```
