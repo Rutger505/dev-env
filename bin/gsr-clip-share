@@ -46,7 +46,15 @@ log "clip: $clip ($(stat -c%s "$clip") bytes)"
 
 name="$(basename "$clip" | tr ' ' '_' | tr -cd 'A-Za-z0-9._-')"
 log "uploading to homecdn/clips/$name"
-mcli cp --quiet "$clip" "homecdn/clips/$name"
+uploaded=""
+for attempt in 1 2 3; do
+  if timeout 10 mcli cp --quiet "$clip" "homecdn/clips/$name"; then uploaded=1; break; fi
+  log "upload attempt $attempt failed or timed out"
+done
+if [ -z "$uploaded" ]; then
+  log "upload failed after 3 attempts"
+  false
+fi
 
 url="https://cdn.rutgerpronk.com/clips/$name"
 printf '%s' "$url" | wl-copy
