@@ -46,8 +46,8 @@ log "clip: $clip ($(stat -c%s "$clip") bytes)"
 
 name="$(basename "$clip" | tr ' ' '_' | tr -cd 'A-Za-z0-9._-')"
 log "uploading to homecdn/clips/$name"
-# 10s plus 1s per 5 MB, half the ~10 MB/s the upload usually reaches
-upload_timeout=$((10 + $(stat -c%s "$clip") / 5000000))
+# 5s plus 1s per 10 MB, a 120 MB clip normally uploads in ~2s so this leaves plenty of slack
+upload_timeout=$((5 +$(stat -c%s "$clip") / 10000000))
 uploaded=""
 for attempt in 1 2 3; do
   if timeout "$upload_timeout" mcli cp --quiet "$clip" "homecdn/clips/$name"; then uploaded=1; break; fi
