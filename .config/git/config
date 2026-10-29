@@ -30,6 +30,8 @@
 [delta]
 	navigate = true
 	line-numbers = true
+	detect-dark-light = never
+	dark = true
 [merge]
 	conflictstyle = zdiff3
 [diff]
