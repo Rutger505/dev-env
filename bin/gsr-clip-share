@@ -15,31 +15,27 @@ fi
 clips_dir="${clips_dir:-$(xdg-user-dir VIDEOS 2>/dev/null || echo "$HOME/Videos")}"
 log "replay directory: $clips_dir"
 
-newest() {
-  find "$clips_dir" -type f -name '*.mp4' -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2-
+# gsr-ui writes the clip in the root and only moves it into a per-window
+# subfolder once it's complete, so clips in subfolders are always finished.
+# Names only have second precision and a save in the same second overwrites the
+# previous one, so new clips are recognised by mtime instead of by path.
+newest_since() {
+  find "$clips_dir" -mindepth 2 -type f -name '*.mp4' -newermt "@$1" -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2-
 }
 
-before="$(newest)"
-log "newest clip before save: ${before:-none}"
-
+start="$(date +%s.%N)"
 log "gsr-ui-cli ${1:-replay-save}"
 gsr-ui-cli "${1:-replay-save}"
 
-# gsr-ui writes the clip asynchronously, wait until a new file stops growing
 clip=""
 for _ in $(seq 1 60); do
   sleep 0.5
-  cand="$(newest)"
-  if [ -n "$cand" ] && [ "$cand" != "$before" ]; then
-    s1=$(stat -c%s "$cand")
-    sleep 0.5
-    s2=$(stat -c%s "$cand")
-    if [ "$s1" = "$s2" ] && [ "$s1" -gt 0 ]; then clip="$cand"; break; fi
-  fi
+  clip="$(newest_since "$start")"
+  if [ -n "$clip" ]; then break; fi
 done
 
 if [ -z "$clip" ]; then
-  log "no new clip in $clips_dir after 60s, is replay running in gsr-ui?"
+  log "no new clip in $clips_dir after 30s, is replay running in gsr-ui?"
   false
 fi
 log "clip: $clip ($(stat -c%s "$clip") bytes)"
