@@ -10,3 +10,6 @@ o.exec_on_start("omarchy toggle idle stay-awake")
 
 -- Discord's real window appears after a popup and ignores the exec workspace annotation
 o.window("^discord$", { workspace = "3 silent" })
+
+hl.unbind("XF86PowerOff")
+o.bind("XF86PowerOff", "Shutdown", "omarchy-system-shutdown", { locked = true })
