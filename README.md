@@ -16,7 +16,7 @@ git clone git@github.com:Rutger505/dev-env.git ~/.local/share/dev-env
 
 - JetBrains: log in to Toolbox, install the editors. Per editor: Edit Custom VM Options → `-Dawt.toolkit.name=WLToolkit`; enable Backup and Sync and plugin auto-updates.
 - Zen: log in to sync and Bitwarden. VS Code: log in and sync settings. Steam: sign in.
-- Tailscale and `sunshine` groups: log in through the URL the installer prints.
+- Tailscale, `sunshine` and `ssh-server` groups: log in through the URL the installer prints.
 - `sunshine` group (desktop): after the reboot open https://localhost:47990, create the admin login, and enter the PIN Moonlight shows when pairing. The `moonlight` group is the client only (laptop): add the host by its Tailscale name `rutger-desktop-omarchy`, so it connects directly at home and away instead of through the subnet router.
 - `cdn` group: one-time `mcli` alias with the SeaweedFS admin keys:
   ```bash

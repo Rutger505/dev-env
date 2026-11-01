@@ -18,5 +18,14 @@ EOF
 sudo ufw allow from 192.168.178.0/24 to any port 22 proto tcp comment ssh
 sudo ufw allow in on tailscale0 to any port 22 proto tcp comment ssh
 
+# The ssh alias reaches this machine by its Tailscale name, whatever network or DHCP lease it is on
+if ! omarchy-installed-service-tailscale; then
+  omarchy-install-service-tailscale
+fi
+# A bare 'tailscale up' fails once other groups set non-default flags, so only log in when needed
+if ! tailscale status >/dev/null; then
+  tailscale up
+fi
+
 sudo systemctl enable sshd.service
 sudo systemctl restart sshd.service
