@@ -17,6 +17,8 @@ o.bind("SUPER + L", "Focus on right window", hl.dsp.focus({ direction = "r" }))
 -- The preinstalls-removed marker disables Omarchy's app bindings, and its launcher lacks the wayland flag
 o.bind("SUPER + SHIFT + M", "Music", { focus = "spotify", launch = "spotify --ozone-platform=wayland" })
 
+o.bind("SUPER + CTRL + U", "Agent usage", "omarchy-shell shell toggle omarchy.agents")
+
 -- Hyprland merges a held Super into the injected keys and runs Super + letter binds, so type after it's released
 local function type_clipboard()
   if hl.is_key_down("Super_L") or hl.is_key_down("Super_R") then
