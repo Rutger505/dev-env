@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+
+closed_last_pane="$HOME/.local/share/tmux/resurrect/closed-last-pane"
+if [ -e "$closed_last_pane" ]; then
+	rm "$closed_last_pane"
+	exit 0
+fi
+
 # resurrect leaves "Tmux restore complete!" on the status line for 5s after every auto-restore
 
 "$HOME/.local/share/tmux/plugins/tmux-resurrect/scripts/restore.sh"
