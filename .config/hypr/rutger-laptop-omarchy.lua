@@ -1,7 +1,9 @@
 hl.on("hyprland.start", function()
   hl.exec_cmd("[workspace 1 silent] uwsm app -- zen-browser")
 
-  hl.exec_cmd("[workspace 3 silent] uwsm app -- ghostty")
+  -- Racing tmux.service makes the shell's tmux fail with "duplicate session: 0", or
+  -- leaves an extra tmux process that makes continuum skip the restore
+  hl.exec_cmd("[workspace 3 silent] systemctl --user start tmux.service; uwsm app -- ghostty")
 
   hl.exec_cmd("uwsm app -- discord")
   hl.exec_cmd("[workspace 4 silent] uwsm app -- Snapchat.desktop")
