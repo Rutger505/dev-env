@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# The lock screen ignores an empty password, so type a throwaway one that PAM accepts
+# right after a hibernate resume. Retried because the shell may not be ready to answer yet.
+for _ in {1..15}; do
+  case $(omarchy-shell lock isLocked) in
+    true)
+      ydotool type x
+      ydotool key 28:1 28:0
+      ;;
+    false)
+      exit 0
+      ;;
+  esac
+  sleep 2
+done

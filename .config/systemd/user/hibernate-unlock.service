@@ -1,0 +1,7 @@
+[Unit]
+Description=Unlock the lock screen after resuming from hibernation
+After=ydotool.service
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/share/dev-env/bin/hibernate-unlock

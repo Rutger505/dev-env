@@ -1,0 +1,8 @@
+[Unit]
+Description=Unlock the lock screen after resuming from hibernation
+
+[Path]
+PathChanged=/run/hibernate-resumed
+
+[Install]
+WantedBy=default.target
