@@ -14,8 +14,8 @@ o.bind("SUPER + J", "Focus on below window", hl.dsp.focus({ direction = "d" }))
 o.bind("SUPER + K", "Focus on above window", hl.dsp.focus({ direction = "u" }))
 o.bind("SUPER + L", "Focus on right window", hl.dsp.focus({ direction = "r" }))
 
--- The preinstalls-removed marker disables Omarchy's app bindings, and its launcher lacks the wayland flag
-o.bind("SUPER + SHIFT + M", "Music", { focus = "spotify", launch = "spotify --ozone-platform=wayland" })
+-- The preinstalls-removed marker disables Omarchy's app bindings
+o.bind("SUPER + SHIFT + M", "Music", "omarchy-launch-or-focus-tui --app-id=org.omarchy.spotatui tmux new-session -A -s spotatui spotatui")
 
 o.bind("SUPER + CTRL + U", "Agent usage", "omarchy-shell shell toggle omarchy.agents")
 

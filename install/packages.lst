@@ -23,6 +23,8 @@ git-delta
 github-cli
 yazi
 glow
+go-yq
+spotatui-bin
 cloc
 btop
 hyperfine

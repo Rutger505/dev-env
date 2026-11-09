@@ -8,7 +8,7 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("uwsm app -t service -p Wants=network-online.target -p After=network-online.target -- discord")
   hl.exec_cmd("[workspace 4 silent] uwsm app -- Snapchat.desktop")
 
-  hl.exec_cmd("[workspace 5 silent] uwsm app -t service -p Wants=network-online.target -p After=network-online.target -- spotify --ozone-platform=wayland")
+  hl.exec_cmd("[workspace 5 silent] systemctl --user start tmux.service; uwsm app -t service -p Wants=network-online.target -p After=network-online.target -- xdg-terminal-exec --app-id=org.omarchy.spotatui -e tmux new-session -A -s spotatui spotatui")
 end)
 
 -- https://wiki.hypr.land/Configuring/Performance/#how-do-i-make-hyprland-draw-as-little-power-as-possible-on-my-laptop
