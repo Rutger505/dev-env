@@ -1,0 +1,7 @@
+[Unit]
+Description=Wait for NetworkManager to be online
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/nm-online -q -t 30

@@ -26,7 +26,7 @@ if git diff --quiet @ '@{upstream}' && [ ! -f "$error_file" ]; then
 fi
 
 git merge --ff-only '@{upstream}' || fail "Local branch diverged from upstream"
-stow --adopt --restow --target="$HOME" . || fail "Stow failed"
+bin/dev-env-stow --adopt || fail "Stow failed"
 # The tree was clean, so this only undoes what --adopt pulled in, like apps' own default configs
 git checkout -- .
 systemctl --user daemon-reload || fail "Reloading user units failed"

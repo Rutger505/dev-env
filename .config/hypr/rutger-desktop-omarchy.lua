@@ -1,7 +1,7 @@
 hl.on("hyprland.start", function()
-  hl.exec_cmd("[workspace 2 silent] uwsm app -- zen-browser")
+  hl.exec_cmd("[workspace 2 silent] uwsm app -t service -p Wants=network-online.target -p After=network-online.target -- zen-browser")
 
-  hl.exec_cmd("uwsm app -- discord")
+  hl.exec_cmd("uwsm app -t service -p Wants=network-online.target -p After=network-online.target -- discord")
 
   hl.exec_cmd("[workspace 4 silent] uwsm app -- heroic")
 end)

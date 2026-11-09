@@ -1,5 +1,7 @@
 [Unit]
 Description=Update dev-env repo
+Requires=network-online.target
+After=network-online.target
 
 [Service]
 Type=oneshot

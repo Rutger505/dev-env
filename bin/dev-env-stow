@@ -1,3 +1,19 @@
 #!/bin/bash
 
-cd "$(dirname "$(realpath "$0")")/.." && stow --restow --target="$HOME" "$@" .
+# Stow links a whole directory when it doesn't exist yet, but some programs ignore symlinked
+# directories, like systemd with drop-in directories. These get created as real directories.
+# TODO: look for install scripts that already create directories themselves to work around this, and move them here.
+real_dirs=(
+  .config/systemd/user/app-steam@autostart.service.d
+)
+
+cd "$(dirname "$(realpath "$0")")/.." || exit 1
+
+for dir in "${real_dirs[@]}"; do
+  if [ -L "$HOME/$dir" ]; then
+    rm "$HOME/$dir"
+  fi
+  mkdir -p "$HOME/$dir"
+done
+
+stow --restow --target="$HOME" "$@" .
