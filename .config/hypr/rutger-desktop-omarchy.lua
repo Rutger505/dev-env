@@ -1,15 +1,12 @@
+local autostart = require("hypr.autostart")
+
 hl.on("hyprland.start", function()
-  hl.exec_cmd("[workspace 2 silent] uwsm app -t service -p Wants=network-online.target -p After=network-online.target -- zen-browser")
+  autostart.launch(2, "^zen$", autostart.after_network("zen-browser"))
 
-  hl.exec_cmd("uwsm app -t service -p Wants=network-online.target -p After=network-online.target -- discord")
-
-  hl.exec_cmd("[workspace 4 silent] uwsm app -- heroic")
+  autostart.launch(3, "^discord$", autostart.after_network("discord"))
 end)
 
 o.exec_on_start("omarchy toggle idle stay-awake")
-
--- Discord's real window appears after a popup and ignores the exec workspace annotation
-o.window("^discord$", { workspace = "3 silent" })
 
 hl.unbind("XF86PowerOff")
 o.bind("XF86PowerOff", "Shutdown", "omarchy-system-shutdown", { locked = true })

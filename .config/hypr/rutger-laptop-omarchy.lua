@@ -1,14 +1,16 @@
+local autostart = require("hypr.autostart")
+
 hl.on("hyprland.start", function()
-  hl.exec_cmd("[workspace 1 silent] uwsm app -t service -p Wants=network-online.target -p After=network-online.target -- zen-browser")
+  autostart.launch(1, "^zen$", autostart.after_network("zen-browser"))
 
   -- Racing tmux.service makes the shell's tmux fail with "duplicate session: 0", or
   -- leaves an extra tmux process that makes continuum skip the restore
-  hl.exec_cmd("[workspace 3 silent] systemctl --user start tmux.service; uwsm app -- ghostty")
+  autostart.launch(3, "^com\\.mitchellh\\.ghostty$", "systemctl --user start tmux.service; uwsm app -- ghostty")
 
-  hl.exec_cmd("uwsm app -t service -p Wants=network-online.target -p After=network-online.target -- discord")
-  hl.exec_cmd("[workspace 4 silent] uwsm app -- Snapchat.desktop")
+  autostart.launch(4, "^discord$", autostart.after_network("discord"))
+  autostart.launch(4, "^chrome-www\\.snapchat\\.com__web-", "uwsm app -- Snapchat.desktop")
 
-  hl.exec_cmd("[workspace 5 silent] systemctl --user start tmux.service; uwsm app -t service -p Wants=network-online.target -p After=network-online.target -- xdg-terminal-exec --app-id=org.omarchy.spotatui -e tmux new-session -A -s spotatui spotatui")
+  autostart.launch(5, "^org\\.omarchy\\.spotatui$", "systemctl --user start tmux.service; " .. autostart.after_network("xdg-terminal-exec --app-id=org.omarchy.spotatui -e tmux new-session -A -s spotatui spotatui"))
 end)
 
 -- https://wiki.hypr.land/Configuring/Performance/#how-do-i-make-hyprland-draw-as-little-power-as-possible-on-my-laptop
@@ -30,6 +32,3 @@ hl.env("VDPAU_DRIVER", "radeonsi")
 -- resume it from D3cold. Vulkan apps therefore only see the iGPU.
 hl.env("AQ_DRM_DEVICES", "/dev/dri/amd-igpu")
 hl.env("VK_ICD_FILENAMES", "/usr/share/vulkan/icd.d/radeon_icd.json")
-
--- Discord's real window appears after a popup and ignores the exec workspace annotation
-o.window("^discord$", { workspace = "4 silent" })
