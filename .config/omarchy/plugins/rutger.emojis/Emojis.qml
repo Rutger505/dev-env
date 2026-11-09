@@ -149,7 +149,7 @@ Item {
   function applySelected(emoji) {
     if (!emoji) return
     root.dismiss()
-    Quickshell.execDetached(["emoji-insert", emoji])
+    Quickshell.execDetached(["wl-copy", "--type", "text/plain", emoji])
   }
 
   ListModel { id: displayModel }
