@@ -1,1 +1,9 @@
 scan_timeout = 100
+format = "${custom.dev_env}$all"
+
+[custom.dev_env]
+when = '[ -f "$DEV_ENV_ERROR_FILE" ]'
+shell = ["sh"]
+symbol = "󰓦"
+format = "[$symbol]($style) "
+style = "red"
