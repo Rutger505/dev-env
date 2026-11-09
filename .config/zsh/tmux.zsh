@@ -9,7 +9,12 @@ if [[ -z "$TMUX" && $- == *i* && "$TERM" != tmux-256color && "$TERMINAL_EMULATOR
   elif (( ${#detached} )); then
     target=(attach-session -t "${detached[1]}")
   else
-    target=(new-session)
+    # tmux names new sessions after a counter that never goes down, so pick the lowest free number
+    sessions=(${(f)"$(tmux list-sessions -F '#{session_name}')"})
+    n=1
+    while (( ${sessions[(Ie)$n]} )); do (( n++ )); done
+    target=(new-session -s $n)
+    unset sessions n
   fi
   unset detached
   # Not exec, so a failing tmux leaves a usable shell
