@@ -30,8 +30,9 @@ sudo tee /etc/kanata/kanata.conf >/dev/null <<EOF
   caps esc)
 EOF
 
-sudo mkdir -p /etc/systemd/system-sleep
-sudo tee /etc/systemd/system-sleep/kanata >/dev/null <<'EOF'
+# systemd-sleep only runs hooks from /usr/lib, not /etc
+sudo rm -f /etc/systemd/system-sleep/kanata
+sudo tee /usr/lib/systemd/system-sleep/kanata >/dev/null <<'EOF'
 #!/bin/bash
 # kanata's grab surviving suspend leaves the keyboard dead for seconds after resume,
 # kanata-unlock.service starts it again once the lockscreen is unlocked
@@ -39,7 +40,7 @@ if [[ $1 == pre ]]; then
   systemctl stop kanata.service
 fi
 EOF
-sudo chmod +x /etc/systemd/system-sleep/kanata
+sudo chmod +x /usr/lib/systemd/system-sleep/kanata
 
 # Omarchy's lockscreen has no unlock hook, the journal line is the only signal
 sudo tee /etc/systemd/system/kanata-unlock.service >/dev/null <<'EOF'

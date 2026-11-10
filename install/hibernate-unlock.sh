@@ -2,15 +2,16 @@
 
 # The disk passphrase after a hibernate resume already proves who's there, so the lock
 # screen accepts any password for a minute after one. Only root can write the marker.
-sudo mkdir -p /etc/systemd/system-sleep
-sudo tee /etc/systemd/system-sleep/hibernate-unlock >/dev/null <<'EOF'
+# systemd-sleep only runs hooks from /usr/lib, not /etc
+sudo rm -f /etc/systemd/system-sleep/hibernate-unlock
+sudo tee /usr/lib/systemd/system-sleep/hibernate-unlock >/dev/null <<'EOF'
 #!/bin/bash
 # suspend-then-hibernate also runs this after its plain suspend stage, which needs no passphrase
 if [[ $1 == post && $SYSTEMD_SLEEP_ACTION == hibernate ]]; then
   date +%s >/run/hibernate-resumed
 fi
 EOF
-sudo chmod +x /etc/systemd/system-sleep/hibernate-unlock
+sudo chmod +x /usr/lib/systemd/system-sleep/hibernate-unlock
 
 sudo tee /usr/local/bin/hibernate-resumed-recently >/dev/null <<'EOF'
 #!/bin/bash
