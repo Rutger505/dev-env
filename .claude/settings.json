@@ -10,5 +10,6 @@
   "tui": "default",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
+  "preferredNotifChannel": "ghostty",
   "switchModelsOnFlag": false
 }
