@@ -1,8 +1,10 @@
 #!/bin/bash
 
 # The lock screen ignores an empty password, so type a throwaway one that PAM accepts
-# right after a hibernate resume. Retried because the shell may not be ready to answer yet.
-for _ in {1..15}; do
+# right after a hibernate resume. Keys typed before the lock takes input are lost, so
+# retype every 0.2s; waiting that long first keeps a retype out of the desktop
+# when an unlock is still finishing.
+for _ in {1..150}; do
   case $(omarchy-shell lock isLocked) in
     true)
       ydotool type x
@@ -12,5 +14,5 @@ for _ in {1..15}; do
       exit 0
       ;;
   esac
-  sleep 2
+  sleep 0.2
 done
