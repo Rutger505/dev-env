@@ -21,9 +21,22 @@ claude_restore_command() {
 	return 1
 }
 
+own_process_command() {
+	local pane_pid args
+	pane_pid=$(tmux display-message -p -t "$1" '#{pane_pid}')
+	args=$(ps -o args= -p "$pane_pid")
+	# A pane started as `new-session <cmd>` runs the command as the pane's own process, which resurrect's ps strategy never records
+	case "${args%% *}" in
+		zsh | -zsh | bash | -bash | sh | "") return 1 ;;
+	esac
+	echo "$args"
+}
+
 while IFS= read -r line; do
 	IFS=$'\t' read -r type session window _ _ pane _ <<<"$line"
 	if [[ $type == pane ]] && command=$(claude_restore_command "$session:$window.$pane"); then
+		line="${line%$'\t'*}"$'\t'":$command"
+	elif [[ $type == pane && $line == *$'\t:' ]] && command=$(own_process_command "$session:$window.$pane"); then
 		line="${line%$'\t'*}"$'\t'":$command"
 	fi
 	printf '%s\n' "$line"
