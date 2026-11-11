@@ -45,7 +45,7 @@ select_optional_groups() {
 
 link_configs() {
   # Missing directories get folded into a symlink to the repo, and apps write keys, credentials and unit links into these
-  mkdir -p -m 700 "$HOME/.ssh" "$HOME/.claude" "$HOME/.local/bin" "$HOME/.config/systemd/user"
+  mkdir -p -m 700 "$HOME/.ssh" "$HOME/.claude" "$HOME/.local/bin" "$HOME/.local/share/applications" "$HOME/.config/systemd/user"
 
   # Omarchy's LazyVim config would stay next to our files and lazy.nvim loads its leftover plugin specs,
   # so replace the whole directory with a folded link to the repo
