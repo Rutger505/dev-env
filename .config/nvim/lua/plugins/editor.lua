@@ -55,8 +55,15 @@ return {
 		cmd = { "ConformInfo" },
 		opts = {
 			formatters_by_ft = {
-				markdown = { "prettier" },
+				markdown = { "prettier", "sembr" },
 				rust = { "rustfmt" },
+			},
+			formatters = {
+				sembr = {
+					format = function(_, _, lines, callback)
+						callback(nil, require("config.sembr").format(lines))
+					end,
+				},
 			},
 			format_on_save = {
 				timeout_ms = 1000,

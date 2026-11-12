@@ -162,10 +162,12 @@ Treesitter parsers are installed automatically (`auto_install = true`) when you 
 
 | Filetype | Formatter |
 |----------|-----------|
-| markdown | prettier |
+| markdown | prettier, then sembr |
 | rust | rustfmt |
 
 Install the formatter binary through `:Mason`. rustfmt comes from rustup instead.
+
+`sembr` (`lua/config/sembr.lua`) puts every sentence in a paragraph on its own line. It finds paragraphs with treesitter, so headings, tables, code blocks, inline code and links are left alone. A sentence ends at `.`, `!` or `?` followed by a word that doesn't start with a lowercase letter, and abbreviations like `e.g.` don't count.
 
 ## Rust
 
