@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "rutger.idle-dim",
+  "name": "Idle Dim",
+  "version": "1.0.0",
+  "author": "rutger",
+  "description": "Dims the display when idle, in place of the screensaver.",
+  "kinds": [
+    "service"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "service": "Service.qml"
+  }
+}
