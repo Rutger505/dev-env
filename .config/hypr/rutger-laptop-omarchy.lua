@@ -1,6 +1,9 @@
 local autostart = require("hypr.autostart")
 
 hl.on("hyprland.start", function()
+  -- Engine for workstation-connect
+  hl.exec_cmd("uwsm app -- kdeconnectd")
+
   autostart.launch(1, "^zen$", autostart.after_network("zen-browser"))
 
   -- Racing tmux.service makes the shell's tmux fail with "duplicate session: 0", or

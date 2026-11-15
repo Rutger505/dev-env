@@ -1,6 +1,9 @@
 local autostart = require("hypr.autostart")
 
 hl.on("hyprland.start", function()
+  -- Engine for workstation-connect
+  hl.exec_cmd("uwsm app -- kdeconnectd")
+
   autostart.launch(2, "^zen$", autostart.after_network("zen-browser"))
 
   autostart.launch(3, "^discord$", autostart.after_network("discord"))
