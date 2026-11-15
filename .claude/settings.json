@@ -11,5 +11,11 @@
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
   "preferredNotifChannel": "ghostty",
-  "switchModelsOnFlag": false
+  "switchModelsOnFlag": false,
+  "permissions": {
+    "allow": [
+      "Bash(someclaw-thread list:*)",
+      "Bash(someclaw-thread show:*)"
+    ]
+  }
 }

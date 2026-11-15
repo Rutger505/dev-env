@@ -1,0 +1,129 @@
+#!/bin/bash
+# Read rocky's someclaw threads (Rutger505/someclaw) for Claude Code. Read-only.
+set -euo pipefail
+
+url=${SOMECLAW_URL:-https://rocky.homelab.rutgerpronk.com}
+token_file=$HOME/.local/state/someclaw-thread/token
+
+# Gateway timestamps are UTC with nanoseconds; fromdate wants whole seconds.
+when='def when: .[:19] + "Z" | fromdate | strflocaltime("%Y-%m-%d %H:%M"); '
+
+usage() {
+  echo "usage: someclaw-thread list [term] | show [--last N] <id|term> | pair" >&2
+  exit 2
+}
+
+die() {
+  echo "someclaw-thread: $*" >&2
+  exit 1
+}
+
+# Token goes to curl via a config on stdin, not argv, so it never shows up in ps.
+api() {
+  [[ -s $token_file ]] || die "not paired on this machine: run someclaw-thread pair"
+  local out code
+  out=$(printf 'header = "Authorization: Bearer %s"\n' "$(<"$token_file")" |
+    curl -sS -K - -w '\n%{http_code}' "$url$1") || die "GET $1 failed"
+  code=${out##*$'\n'}
+  out=${out%$'\n'*}
+  [[ $code == 401 ]] && die "unauthorized (token expired or revoked): run someclaw-thread pair"
+  [[ $code == 2?? ]] || die "GET $1: HTTP $code: $out"
+  printf '%s\n' "$out"
+}
+
+# Same set as someclaw's sidebar (server/broker.ts): rocky's sessions without titler sessions and empty ones.
+threads() {
+  api /api/sessions | jq --arg term "${1:-}" '
+    [.sessions[]
+      | select(.agent_alias == "rocky" and (.session_id | startswith("someclaw-title-") | not) and .message_count > 0)
+      | select(((.name // "") | ascii_downcase) as $n | all($term | ascii_downcase | splits("\\s+") | select(. != ""); . as $w | $n | contains($w)))]
+    | sort_by(.last_activity) | reverse'
+}
+
+print_threads() {
+  jq -r "$when"'.[] | "\(.session_id)\t\(.last_activity | when)\t\(.name // "(untitled)")"'
+}
+
+show() {
+  local last=0 terms=() term match id
+  while (($#)); do
+    if [[ $1 == --last ]]; then
+      [[ ${2:-} =~ ^[0-9]+$ ]] || usage
+      last=$2
+      shift 2
+    else
+      terms+=("$1")
+      shift
+    fi
+  done
+  term=${terms[*]:-}
+  [[ -n $term ]] || usage
+  match=$(threads | jq --arg id "$term" '[.[] | select(.session_id == $id)]')
+  [[ $(jq length <<<"$match") == 1 ]] || match=$(threads "$term")
+  case $(jq length <<<"$match") in
+    0) die "no thread matches '$term' (someclaw-thread list)" ;;
+    1) ;;
+    *)
+      echo "someclaw-thread: '$term' matches several threads, pick an id:" >&2
+      print_threads <<<"$match" >&2
+      exit 3
+      ;;
+  esac
+  id=$(jq -r '.[0].session_id' <<<"$match")
+  jq -r "$when"'.[0] | "THREAD: \(.name // "(untitled)") (\(.session_id), last activity \(.last_activity | when))\n"' <<<"$match"
+  # Hidden blocks per someclaw shared/protocol.ts; tool calls/results and empty tool-only turns are dropped.
+  api "/api/sessions/$(jq -rn --arg id "$id" '$id | @uri')/messages" | jq -r --argjson last "$last" '
+    def body: (try fromjson catch null) as $v
+      | if ($v | type) == "object" and ($v | has("tool_calls") or has("reasoning_content")) then $v.content // "" else . end;
+    [.messages[]
+      | if .role == "user" then
+          .content
+          | sub("^\\[(CURRENT DATE & TIME: [^\\]]*|\\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d [^\\]]*)\\]\\s*"; "")
+          | sub("^<cut-off-turn [^>]*>[\\s\\S]*?</cut-off-turn>\\n\\n"; "")
+          | until(test("^<loaded-skill ") | not; sub("^<loaded-skill [^>]*>[\\s\\S]*?</loaded-skill>\\n\\n"; ""))
+          | (capture("^<continued-from id=\"(?<id>[^\"]*)\" channel=\"(?<ch>[^\"]*)\"") // null) as $f
+          | sub("^<continued-from [^>]*>[\\s\\S]*?</continued-from>\\n\\n"; "")
+          | sub("^\\[someclaw\\] Rate limit reset: continue where you left off\\.(\\n\\n)?"; "")
+          | (if $f then "[continued from \($f.ch) session \($f.id)]\n" else "" end) + .
+          | select(. != "") | "USER: \(.)"
+        elif .role == "assistant" then
+          (.content | capture("^<cron-run job=\"(?<job>[^\"]*)\" name=\"(?<name>[^\"]*)\" run=\"[0-9]+\" status=\"(?<status>[^\"]*)\" at=\"(?<at>[^\"]*)\">") // null) as $c
+          | if $c then "ROCKY: [cron run \($c.name | if . == "" then $c.job else . end): \($c.status), \($c.at)]"
+            else .content | body | select(test("\\S")) | "ROCKY: \(.)" end
+        else empty end]
+    | (if $last > 0 and length > $last then ["[\(length - $last) earlier messages omitted]"] + .[-$last:] else . end)
+    | join("\n\n")'
+}
+
+pair() {
+  local req id code status pairing_code resp
+  req=$(curl -sS --fail-with-body -X POST -A "someclaw-thread on $HOSTNAME" "$url/someclaw/pair/request") ||
+    die "pair request failed: $req"
+  id=$(jq -r .id <<<"$req")
+  code=$(jq -r .code <<<"$req")
+  echo "tell rocky: approve pairing $code"
+  echo "waiting (expires $(jq -r .expires_at <<<"$req"))..."
+  while :; do
+    sleep 3
+    status=$(curl -sS --fail-with-body "$url/someclaw/pair/request/$id") || die "poll failed: $status"
+    case $(jq -r .status <<<"$status") in
+      pending) ;;
+      approved) break ;;
+      *) die "pairing $(jq -r .status <<<"$status")" ;;
+    esac
+  done
+  pairing_code=$(jq -r .pairing_code <<<"$status")
+  resp=$(PAIRING_CODE=$pairing_code jq -n --arg name "someclaw-thread@$HOSTNAME" '{code: env.PAIRING_CODE, device_name: $name, device_type: "cli"}' |
+    curl -sS --fail-with-body -H 'content-type: application/json' --data @- "$url/api/pair") || die "pair failed: $resp"
+  jq -e '.token | strings' <<<"$resp" >/dev/null || die "pair: no token in gateway response"
+  mkdir -p "$(dirname "$token_file")"
+  (umask 077 && jq -r .token <<<"$resp" >"$token_file")
+  echo "paired as someclaw-thread@$HOSTNAME"
+}
+
+case ${1:-} in
+  list) threads "${2:-}" | print_threads ;;
+  show) shift && show "$@" ;;
+  pair) pair ;;
+  *) usage ;;
+esac
