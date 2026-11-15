@@ -1,5 +1,5 @@
 #!/bin/bash
-# Read rocky's someclaw threads (Rutger505/someclaw) for Claude Code. Read-only.
+# Read rocky's someclaw threads (Rutger505/someclaw) for Claude Code, and hand work over to rocky (send).
 set -euo pipefail
 
 url=${SOMECLAW_URL:-https://rocky.homelab.rutgerpronk.com}
@@ -9,7 +9,7 @@ token_file=$HOME/.local/state/someclaw-thread/token
 when='def when: .[:19] + "Z" | fromdate | strflocaltime("%Y-%m-%d %H:%M"); '
 
 usage() {
-  echo "usage: someclaw-thread list [term] | show [--last N] <id|term> | pair" >&2
+  echo "usage: someclaw-thread list [term] | show [--last N] <id|term> | send <id|term|new> <file|-> | pair" >&2
   exit 2
 }
 
@@ -18,16 +18,17 @@ die() {
   exit 1
 }
 
-# Token goes to curl via a config on stdin, not argv, so it never shows up in ps.
+# Token goes to curl as a config file, not argv, so it never shows up in ps. With a second argument: POST that JSON.
 api() {
   [[ -s $token_file ]] || die "not paired on this machine: run someclaw-thread pair"
-  local out code
-  out=$(printf 'header = "Authorization: Bearer %s"\n' "$(<"$token_file")" |
-    curl -sS -K - -w '\n%{http_code}' "$url$1") || die "GET $1 failed"
+  local out code post=()
+  [[ -n ${2:-} ]] && post=(-H 'content-type: application/json' --data-binary @-)
+  out=$(curl -sS -K <(printf 'header = "Authorization: Bearer %s"\n' "$(<"$token_file")") -w '\n%{http_code}' \
+    "${post[@]}" "$url$1" <<<"${2:-}") || die "$1 failed"
   code=${out##*$'\n'}
   out=${out%$'\n'*}
   [[ $code == 401 ]] && die "unauthorized (token expired or revoked): run someclaw-thread pair"
-  [[ $code == 2?? ]] || die "GET $1: HTTP $code: $out"
+  [[ $code == 2?? ]] || die "$1: HTTP $code: $out"
   printf '%s\n' "$out"
 }
 
@@ -44,6 +45,22 @@ print_threads() {
   jq -r "$when"'.[] | "\(.session_id)\t\(.last_activity | when)\t\(.name // "(untitled)")"'
 }
 
+# Exact id, else title words; prints the one matching thread.
+resolve() {
+  local match
+  match=$(threads | jq --arg id "$1" '[.[] | select(.session_id == $id)]')
+  [[ $(jq length <<<"$match") == 1 ]] || match=$(threads "$1")
+  case $(jq length <<<"$match") in
+    0) die "no thread matches '$1' (someclaw-thread list)" ;;
+    1) jq '.[0]' <<<"$match" ;;
+    *)
+      echo "someclaw-thread: '$1' matches several threads, pick an id:" >&2
+      print_threads <<<"$match" >&2
+      exit 3
+      ;;
+  esac
+}
+
 show() {
   local last=0 terms=() term match id
   while (($#)); do
@@ -58,19 +75,9 @@ show() {
   done
   term=${terms[*]:-}
   [[ -n $term ]] || usage
-  match=$(threads | jq --arg id "$term" '[.[] | select(.session_id == $id)]')
-  [[ $(jq length <<<"$match") == 1 ]] || match=$(threads "$term")
-  case $(jq length <<<"$match") in
-    0) die "no thread matches '$term' (someclaw-thread list)" ;;
-    1) ;;
-    *)
-      echo "someclaw-thread: '$term' matches several threads, pick an id:" >&2
-      print_threads <<<"$match" >&2
-      exit 3
-      ;;
-  esac
-  id=$(jq -r '.[0].session_id' <<<"$match")
-  jq -r "$when"'.[0] | "THREAD: \(.name // "(untitled)") (\(.session_id), last activity \(.last_activity | when))\n"' <<<"$match"
+  match=$(resolve "$term")
+  id=$(jq -r .session_id <<<"$match")
+  jq -r "$when"'. | "THREAD: \(.name // "(untitled)") (\(.session_id), last activity \(.last_activity | when))\n"' <<<"$match"
   # Hidden blocks per someclaw shared/protocol.ts; tool calls/results and empty tool-only turns are dropped.
   api "/api/sessions/$(jq -rn --arg id "$id" '$id | @uri')/messages" | jq -r --argjson last "$last" '
     def body: (try fromjson catch null) as $v
@@ -93,6 +100,18 @@ show() {
         else empty end]
     | (if $last > 0 and length > $last then ["[\(length - $last) earlier messages omitted]"] + .[-$last:] else . end)
     | join("\n\n")'
+}
+
+# Via someclaw's broker, not the gateway: only the broker starts a turn, queues behind a running one and forks channel threads.
+send() {
+  [[ $# == 2 ]] || usage
+  local to=null resp
+  [[ $1 == new ]] || to=$(resolve "$1" | jq .session_id)
+  resp=$(cat -- "$2" | jq -Rs --argjson to "$to" --arg host "${HOSTNAME//[^[:alnum:]._-]/}" '
+    if test("\\S") then {to: $to, text: "<handoff from=\"claude-code\" host=\"\($host)\">\n\(gsub("</handoff>"; "</handoff_>") | sub("\\s+$"; ""))\n</handoff>"}
+    else error end' 2>/dev/null) || die "empty handoff"
+  resp=$(api /someclaw/send "$resp")
+  jq -r --arg url "$url" '"\(.action)\nthread: \(.id)\n\($url)/#\(.id)"' <<<"$resp"
 }
 
 pair() {
@@ -124,6 +143,7 @@ pair() {
 case ${1:-} in
   list) threads "${2:-}" | print_threads ;;
   show) shift && show "$@" ;;
+  send) shift && send "$@" ;;
   pair) pair ;;
   *) usage ;;
 esac
