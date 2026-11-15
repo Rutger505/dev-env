@@ -1,5 +1,6 @@
 [Unit]
 Description=Wait for NetworkManager to be online
+ConditionPathExists=/usr/bin/nm-online
 
 [Service]
 Type=oneshot
