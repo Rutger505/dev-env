@@ -3,6 +3,9 @@
     "DISABLE_AUTOUPDATER": "1"
   },
   "model": "opus",
+  "permissions": {
+    "additionalDirectories": ["/home/rutger"]
+  },
   "enabledPlugins": {
     "rust-analyzer-lsp@claude-plugins-official": true,
     "clangd-lsp@claude-plugins-official": true
