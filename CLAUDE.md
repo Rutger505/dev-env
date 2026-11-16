@@ -1,6 +1,6 @@
 # dev-env
 
-Setup for my Omarchy (Arch + Hyprland) machines: packages, dotfiles linked with GNU Stow, and a few scripts. Omarchy is the only target. Don't add distro detection or abstractions for other systems.
+Setup for my two Omarchy (Arch + Hyprland) machines, desktop and laptop: packages, dotfiles linked with GNU Stow, and a few scripts. It's also installed on the headless agent VM (`zeroclaw`, plain Arch without Omarchy or a graphical session), where only the packages, the stowed configs and the update timer matter. Keep anything graphical (Hyprland, ydotool, desktop apps) from breaking or running there, checked with `~/.local/share/omarchy`. Don't add distro detection or abstractions for other systems.
 
 ## Git workflow
 

@@ -1,6 +1,6 @@
 # dev-env
 
-Packages, dotfiles and scripts for my Omarchy (Arch + Hyprland) machines.
+Packages, dotfiles and scripts for my two Omarchy (Arch + Hyprland) machines. Also installed on the headless agent VM (`zeroclaw`, plain Arch, no Omarchy), which skips the graphical bits like ydotool.
 
 ## Install
 
