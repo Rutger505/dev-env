@@ -35,3 +35,8 @@ hl.env("VDPAU_DRIVER", "radeonsi")
 -- resume it from D3cold. Vulkan apps therefore only see the iGPU.
 hl.env("AQ_DRM_DEVICES", "/dev/dri/amd-igpu")
 hl.env("VK_ICD_FILENAMES", "/usr/share/vulkan/icd.d/radeon_icd.json")
+
+-- CUDA and EGL bypass the Vulkan ICD list. Electron apps (Discord) probe CUDA for
+-- NVENC and glvnd tries 10_nvidia.json before mesa, either one keeps the dGPU awake.
+hl.env("CUDA_VISIBLE_DEVICES", "")
+hl.env("__EGL_VENDOR_LIBRARY_FILENAMES", "/usr/share/glvnd/egl_vendor.d/50_mesa.json")

@@ -3,5 +3,8 @@
 hyprctl -q eval 'hl.monitor({ output = "eDP-1", mode = "1920x1080@144", position = "0x0", scale = 1 })'
 trap 'hyprctl -q reload' EXIT
 
-# The laptop session limits VK_ICD_FILENAMES to the iGPU, which hides the dGPU from prime-run's Vulkan layer
-VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json prime-run "$@"
+# The laptop session hides the dGPU from Vulkan, CUDA and EGL, so undo each of those here
+VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json \
+  CUDA_VISIBLE_DEVICES=0 \
+  __EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/10_nvidia.json:/usr/share/glvnd/egl_vendor.d/50_mesa.json \
+  prime-run "$@"
