@@ -5,6 +5,7 @@
 # TODO: look for install scripts that already create directories themselves to work around this, and move them here.
 real_dirs=(
   .config/systemd/user/app-steam@autostart.service.d
+  .config/systemd/user/onedrive.service.d
 )
 
 cd "$(dirname "$(realpath "$0")")/.." || exit 1
