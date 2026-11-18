@@ -5,4 +5,5 @@ After=network-online.target
 
 [Service]
 Type=oneshot
+ExecCondition=/bin/sh -c '[ ! -x /usr/bin/nm-online ] || /usr/bin/nm-online -q -t 0'
 ExecStart=%h/.local/share/dev-env/bin/dev-env-update-self
