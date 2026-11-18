@@ -1,8 +1,8 @@
 local autostart = require("hypr.autostart")
 
 hl.on("hyprland.start", function()
-  -- Engine for workstation-connect
-  hl.exec_cmd("uwsm app -- kdeconnectd")
+  -- Engine for workstation-connect. In its app unit: the RemoteDesktop portal (trackpad) needs its app ID
+  hl.exec_cmd("systemctl --user start app-org.kde.kdeconnect.daemon@autostart.service")
 
   autostart.launch(1, "^zen$", autostart.after_network("zen-browser"))
 

@@ -31,7 +31,6 @@ hyperfine
 mkcert
 xdg-ninja
 magic-wormhole
-kdeconnect
 ookla-speedtest-bin
 sudo-rs
 
