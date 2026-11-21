@@ -24,7 +24,7 @@ github-cli
 yazi
 glow
 go-yq
-spotatui-bin
+rustup
 cloc
 btop
 hyperfine
