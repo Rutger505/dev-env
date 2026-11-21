@@ -13,7 +13,9 @@ fi
 if pacman -Q spotatui-bin >/dev/null 2>&1; then
   yay -Rns --noconfirm spotatui-bin
 fi
-cargo install --git https://github.com/Rutger505/spotatui --locked --no-default-features \
+# persistent target dir: updates only recompile what changed (cargo install deletes its temp dir)
+CARGO_TARGET_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/spotatui-build" \
+  cargo install --git https://github.com/Rutger505/spotatui --locked --no-default-features \
   --features telemetry,tui,streaming,discord-rpc,cover-art,scripting,mcp-server,ai-dj,audio-viz,audio-viz-cpal,mpris,local-files,subsonic,internet-radio,youtube,qobuz,soloist spotatui
 
 # spotatui rewrites config.yml and state.yml with an atomic rename, which would replace stowed symlinks
