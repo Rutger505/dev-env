@@ -19,6 +19,29 @@ o.bind("SUPER + SHIFT + M", "Music", "omarchy-launch-or-focus-tui --app-id=org.o
 
 o.bind("SUPER + CTRL + U", "Agent usage", "omarchy-shell shell toggle omarchy.agents")
 
+-- Monitors counted left to right; replaces Omarchy's bar panel binds
+local function focus_monitor(number)
+  return function()
+    local monitors = {}
+    for _, monitor in ipairs(hl.get_monitors()) do
+      if not monitor.is_mirror then
+        monitors[#monitors + 1] = monitor
+      end
+    end
+    table.sort(monitors, function(left, right) return left.x < right.x end)
+
+    if monitors[number] then
+      hl.dispatch(hl.dsp.focus({ monitor = monitors[number].name }))
+    end
+  end
+end
+
+for number = 1, 5 do
+  local keys = "SUPER + CTRL + code:" .. tostring(number + 9)
+  hl.unbind(keys)
+  o.bind(keys, "Focus monitor " .. number, focus_monitor(number))
+end
+
 -- Hyprland merges a held Super into the injected keys and runs Super + letter binds, so type after it's released
 local function type_clipboard()
   if hl.is_key_down("Super_L") or hl.is_key_down("Super_R") then

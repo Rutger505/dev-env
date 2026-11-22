@@ -25,6 +25,15 @@ function autostart.launch(workspace, class, command)
   hl.exec_cmd(command)
 end
 
+-- Omarchy gives every monitor its own block of ten workspaces (see its monitor-workspaces.lua). Pins the
+-- workspace to its monitor, else Hyprland opens it on the focused one. Falls back to the focused monitor's slot
+function autostart.launch_on(monitor_name, slot, class, command)
+  local monitor = hl.get_monitor(monitor_name) or hl.get_active_monitor()
+  local workspace = o.workspaces.workspace_id(monitor, slot)
+  hl.workspace_rule({ workspace = tostring(workspace), monitor = monitor.name })
+  autostart.launch(workspace, class, command)
+end
+
 function autostart.after_network(command)
   return "uwsm app -t service -p Wants=network-online.target -p After=network-online.target -- " .. command
 end
