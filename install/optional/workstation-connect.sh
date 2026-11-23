@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# environment.d only applies after the reboot, and wsconnect update installs into the same CARGO_HOME later
+# environment.d only applies after the reboot, and workstation-connect update installs into the same CARGO_HOME later
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 export RUSTUP_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/rustup"
 config="${XDG_CONFIG_HOME:-$HOME/.config}"
@@ -11,17 +11,17 @@ raw=https://raw.githubusercontent.com/Rutger505/workstation-connect/main/laptop/
 if ! rustup default >/dev/null 2>&1; then
   rustup default stable
 fi
-# Later updates go through wsconnect update
-if [ ! -x "$CARGO_HOME/bin/wsconnect" ]; then
-  cargo install --git "$repo" --locked wsconnect
+# Later updates go through workstation-connect update
+if [ ! -x "$CARGO_HOME/bin/workstation-connect" ]; then
+  cargo install --git "$repo" --locked workstation-connect
 fi
 
-curl -fsSL "$raw/wsconnect.service" -o "$config/systemd/user/wsconnect.service"
+curl -fsSL "$raw/workstation-connect.service" -o "$config/systemd/user/workstation-connect.service"
 mkdir -p "$config/workstation-connect"
 if [ ! -f "$config/workstation-connect/config.toml" ]; then
   curl -fsSL "$raw/config.example.toml" -o "$config/workstation-connect/config.toml"
 fi
-systemctl --user enable wsconnect.service
+systemctl --user enable workstation-connect.service
 
 # The daemon uses BlueZ's experimental LE bearer API, and a stale GATT cache once hid its service on the phone for a day
 sudo sed -i \

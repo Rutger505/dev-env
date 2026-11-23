@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "rutger.workstation-connect",
+  "name": "Workstation Connect",
+  "version": "1.0.0",
+  "author": "rutger",
+  "description": "Phone internet on demand (workstation-connect) status in the bar.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Workstation Connect",
+    "description": "Phone status; click toggles pause, right-click opens the action menu",
+    "category": "System",
+    "allowMultiple": false
+  }
+}
