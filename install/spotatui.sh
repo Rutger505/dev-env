@@ -18,11 +18,11 @@ CARGO_TARGET_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/spotatui-build" \
   cargo install --git https://github.com/Rutger505/spotatui --locked --no-default-features \
   --features telemetry,tui,streaming,discord-rpc,cover-art,scripting,mcp-server,ai-dj,audio-viz,audio-viz-cpal,mpris,local-files,subsonic,internet-radio,youtube,qobuz,soloist spotatui
 
-# spotatui rewrites config.yml and state.yml with an atomic rename, which would replace stowed symlinks
+# spotatui rewrites config.yml with an atomic rename, which would replace a stowed symlink
 config="${XDG_CONFIG_HOME:-$HOME/.config}/spotatui/config.yml"
 mkdir -p "$(dirname "$config")"
 touch "$config"
-yq -i '
+device_name="$(uname -n)" yq -i '
   .behavior.disable_auto_update = true |
   .behavior.enable_global_song_count = false |
   .behavior.pin_community_playlist = false |
@@ -31,10 +31,5 @@ yq -i '
   .behavior.playbar_cover_art_size_percent = 200 |
   .behavior.now_playing_panel_on_startup = true |
   .behavior.enable_streaming = true |
-  .behavior.streaming_device_name = "$hostname"
+  .behavior.streaming_device_name = strenv(device_name)
 ' "$config"
-
-state="${XDG_STATE_HOME:-$HOME/.local/state}/spotatui/state.yml"
-mkdir -p "$(dirname "$state")"
-touch "$state"
-yq -i '.pane_layout = {"axis": "horizontal", "percent": 80, "first": "main", "second": "cover_art"}' "$state"
