@@ -29,7 +29,9 @@ yq -i '
   .behavior.enable_announcements = false |
   .behavior.startup_route = "stats" |
   .behavior.playbar_cover_art_size_percent = 200 |
-  .behavior.now_playing_panel_on_startup = true
+  .behavior.now_playing_panel_on_startup = true |
+  .behaviour.enable_streaming = true |
+  .behaviour.streaming_device_name = "$hostname"
 ' "$config"
 
 state="${XDG_STATE_HOME:-$HOME/.local/state}/spotatui/state.yml"
