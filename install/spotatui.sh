@@ -31,5 +31,5 @@ device_name="$(uname -n)" yq -i '
   .behavior.playbar_cover_art_size_percent = 200 |
   .behavior.now_playing_panel_on_startup = true |
   .behavior.enable_streaming = true |
-  .behavior.streaming_device_name = strenv(device_name)
+  .behavior.streaming_device_name = "Spotatui (" + strenv(device_name) + ")"
 ' "$config"
