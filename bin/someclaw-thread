@@ -9,7 +9,7 @@ token_file=$HOME/.local/state/someclaw-thread/token
 when='def when: .[:19] + "Z" | fromdate | strflocaltime("%Y-%m-%d %H:%M"); '
 
 usage() {
-  echo "usage: someclaw-thread list [term] | show [--last N] <id|term> | send <id|term|new> <file|-> | pair" >&2
+  echo "usage: someclaw-thread list [term] | show [--last N] <id|term> | send <id|term|new> <file|-> | wait <id|term> | pair" >&2
   exit 2
 }
 
@@ -114,6 +114,29 @@ send() {
   jq -r --arg url "$url" '"\(.action)\nthread: \(.id)\n\($url)/#\(.id)"' <<<"$resp"
 }
 
+# The gateway stores a turn's messages only when it ends, so "done" is: not running anymore, and either it ran
+# while we waited or new messages arrived since we started.
+wait_reply() {
+  [[ $# == 1 ]] || usage
+  local id start count ran=0
+  id=$(resolve "$1" | jq -r .session_id)
+  start=$(message_count "$id")
+  while :; do
+    if api /api/sessions/running | jq -e --arg id "$id" 'any(.sessions[]; .session_id == $id)' >/dev/null; then
+      ran=1
+    else
+      count=$(message_count "$id")
+      ((ran || count > start)) && break
+    fi
+    sleep 15
+  done
+  show --last 1 "$id"
+}
+
+message_count() {
+  api /api/sessions | jq --arg id "$1" '.sessions[] | select(.session_id == $id) | .message_count'
+}
+
 pair() {
   local req id code status pairing_code resp
   req=$(curl -sS --fail-with-body -X POST -A "someclaw-thread on $HOSTNAME" "$url/someclaw/pair/request") ||
@@ -144,6 +167,7 @@ case ${1:-} in
   list) threads "${2:-}" | print_threads ;;
   show) shift && show "$@" ;;
   send) shift && send "$@" ;;
+  wait) shift && wait_reply "$@" ;;
   pair) pair ;;
   *) usage ;;
 esac
