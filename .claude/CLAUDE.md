@@ -32,3 +32,7 @@ Keep shell commands as simple as possible so they are readable and Claude Code c
 
 All projects are stored in `~/Source/`.
 When talking about a project, try finding it in the source folder first, if you cant find it use `gh repo list` and `gh repo clone` to get it.
+
+## Project knowledge
+
+My agent rocky keeps knowledge about my projects in `~/Source/zeroclaw-config` (`agents/rocky/workspace/AGENTS.md` lists all projects, `agents/rocky/workspace/skills/` has per project skills with design decisions, pitfalls and workflows). When a task touches a project or refers to other projects ("like in fastify"), and the repos themselves (their `CLAUDE.md`/`AGENTS.md`, code) don't give enough context, look there. How: the someclaw skill, section "rocky's skills".

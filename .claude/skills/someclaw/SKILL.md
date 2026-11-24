@@ -1,6 +1,6 @@
 ---
 name: someclaw
-description: "Everything about someclaw and rocky, Rutger's ZeroClaw agent: read his someclaw threads to pick up where they left off, hand work over to rocky, and read rocky's skills and workspace (~/Source/zeroclaw-config) for project knowledge. Use when he mentions someclaw, rocky, someclaw/rocky skills ('kijk in someclaw skills'), says to pick up, continue or read a thread ('pak de thread over X op'), or 'draag dit over aan someclaw thread X' / 'geef dit aan rocky'."
+description: "Everything about someclaw and rocky, Rutger's ZeroClaw agent: read his someclaw threads to pick up where they left off, hand work over to rocky, and read rocky's skills and workspace (~/Source/zeroclaw-config) for project knowledge. Also use for project knowledge when a task touches one of his projects (or compares to them, 'like in fastify') and the repo alone lacks context. Use when he mentions someclaw, rocky, someclaw/rocky skills ('kijk in someclaw skills'), says to pick up, continue or read a thread ('pak de thread over X op'), or 'draag dit over aan someclaw thread X' / 'geef dit aan rocky'."
 ---
 
 **What**
