@@ -22,6 +22,7 @@ fzf
 git-delta
 github-cli
 yazi
+clipboard-bin
 glow
 go-yq
 rustup

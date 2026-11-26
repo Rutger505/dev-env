@@ -1,0 +1,7 @@
+[[plugin.deps]]
+use = "orhnk/system-clipboard"
+rev = "ed946c3"
+hash = "43fff18b85896a499105f621de458ea1"
+
+[flavor]
+deps = []

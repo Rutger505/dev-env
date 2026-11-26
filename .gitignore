@@ -7,3 +7,5 @@
 .config/onedrive/*
 !.config/onedrive/config
 !.config/onedrive/sync_list
+
+.config/yazi/plugins/
