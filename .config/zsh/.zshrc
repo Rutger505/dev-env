@@ -39,3 +39,4 @@ source $ZDOTDIR/aliases.zsh
 for file in $ZDOTDIR/packages/*.zsh; do
   source "$file"
 done
+alias kys=exit
