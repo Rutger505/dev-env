@@ -23,12 +23,6 @@ if [ ! -f "$config/workstation-connect/config.toml" ]; then
 fi
 systemctl --user enable workstation-connect.service
 
-# The daemon uses BlueZ's experimental LE bearer API, and a stale GATT cache once hid its service on the phone for a day
-sudo sed -i \
-  -e '/^\[General\]/,/^\[/ s/^#\?Experimental = .*/Experimental = true/' \
-  -e '/^\[GATT\]/,/^\[/ s/^#\?Cache = .*/Cache = no/' \
-  /etc/bluetooth/main.conf
-
 # The KDE Connect trackpad needs a RemoteDesktop portal, which xdg-desktop-portal-hyprland lacks.
 # The whitelist skips luminous' permission dialog for KDE Connect only.
 mkdir -p "$config/xdg-desktop-portal" "$config/xdg-desktop-portal-luminous"
