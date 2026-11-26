@@ -5,6 +5,11 @@
 echo 'w /sys/power/pm_freeze_timeout - - - - 60000' | sudo tee /etc/tmpfiles.d/pm-freeze-timeout.conf >/dev/null
 sudo systemd-tmpfiles --create /etc/tmpfiles.d/pm-freeze-timeout.conf
 
+# The default image_size (2/5 of RAM) fills the image with page cache, so writing it
+# through dm-crypt takes minutes. 0 drops the cache and keeps only app memory.
+echo 'w /sys/power/image_size - - - - 0' | sudo tee /etc/tmpfiles.d/pm-image-size.conf >/dev/null
+sudo systemd-tmpfiles --create /etc/tmpfiles.d/pm-image-size.conf
+
 sudo install -Dm755 /dev/stdin /usr/lib/systemd/system-sleep/btusb-workaround <<'EOF'
 #!/bin/sh
   # MT7921 Bluetooth needs ~2.5 s to set up its controller after an S3 resume, and
