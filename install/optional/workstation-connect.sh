@@ -35,3 +35,9 @@ services="${XDG_DATA_HOME:-$HOME/.local/share}/dbus-1/services"
 mkdir -p "$services"
 printf '[D-BUS Service]\nName=org.kde.kdeconnect\nExec=/usr/bin/kdeconnectd\nSystemdService=app-org.kde.kdeconnect.daemon@autostart.service\n' \
   >"$services/org.kde.kdeconnect.service"
+
+# KDE Connect over Tailscale (no shared LAN): Omarchy's ufw denies incoming by default
+if command -v ufw >/dev/null; then
+  sudo ufw allow in on tailscale0 to any port 1714:1764 proto tcp
+  sudo ufw allow in on tailscale0 to any port 1714:1764 proto udp
+fi
