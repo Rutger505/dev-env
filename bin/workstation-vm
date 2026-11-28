@@ -1,0 +1,29 @@
+#!/bin/bash
+# Rutger505/workstation in a VM window with virgl: fresh archinstall snapshot, then the checkout's install.sh (uncommitted changes too).
+# workstation-vm [arch|arch-luks]          reinstall from snapshot base and boot into Hyprland
+# workstation-vm [arch|arch-luks] CMD...   any test/vm command (up, ssh, sync, down, ...), see ~/Source/workstation/README.md
+# In the window, Ctrl+Alt+G grabs the keyboard so Super goes to the guest.
+set -euo pipefail
+
+repo=$HOME/Source/workstation
+distro=arch
+[[ ${1:-} == arch || ${1:-} == arch-luks ]] && { distro=$1; shift; }
+
+[[ -d $repo ]] || git clone https://github.com/Rutger505/workstation.git "$repo"
+
+vm() { VM_GUI=1 VM_MEM=${VM_MEM:-4096} VM_CPUS=${VM_CPUS:-4} "$repo/test/vm" "$distro" "$@"; }
+
+if [[ $# -gt 0 ]]; then
+  vm "$@"
+  exit
+fi
+
+[[ -f ${VM_DIR:-$HOME/.cache/workstation-vm}/$distro.qcow2 ]] || vm install
+vm down
+vm reset
+vm up
+vm sync
+vm ssh '.local/share/workstation/install.sh </dev/null'
+# reboot drops the ssh connection
+vm ssh 'sudo systemctl reboot' || true
+echo "rebooting into Hyprland; afterwards: workstation-vm $distro sync|ssh|down"
